@@ -1,1 +1,9 @@
 language: java
+
+addons:
+  sonarcloud:
+    organization: "leodrk"
+    token: 
+      secure: "UhoV2tBo6F0IAlkqeQGEpNc10cNEXDnK09DEBlnMMF6gTNsHVUDmyBWhsx2vHgSeX08cqZ+Y+HOuEKqHa6Tymgvb7nrcDlt20Vj/lEoaUUDPSTt0XU8IV0rCmEuqF7ZNctCuW7iZaInE2waC+pSLF1PTpRo5FY6s/IBnxUCWsi+DK3ZPu8/kEthydREnc/+DJj527OSWJOR75PiFtZFcNKdW8/2/Jnr5dVTA9h2Ihc7BNQqjdRf77ZeDeRndLvcAYOboYaLYA+jrIqwNq7+44AtVH3zLWcCzJu4SSsbCgy7lwmKhTGWBhp0eFsHTE0pLSW60xLT0gl/GayBIaFRbxs2XUp+Dr+5yjAbNtO/4g9oI5ZBSBLx4p4G+XVR09RTUAVsqkJlt0452hSE7wZQqk+zjsN3a4BUvCxlZ+pCXvNsBWQeI+BtpslY1J2WJBM4tR23mDafhOuRTqGKEHlTR9qIj/8++d+n1YxPKL7ZNKasQ9vf5BC943+vLx6XuZzWjYGDAjPRx9n3PasgdttIfFHCG9uO9zZtHzYNwrnVThQKj4AOMKBSIipM32zzlOsSa5FaJ+yf7ehlx/K0uSh3H99+HilXmpOCP8tNlacOOlE3b/t5PKJZ/yMWjOk/1hzRAdw9H6OZBWIDenWf6VOFr2aFei1eqCKM1aUanZzB00gE="
+script:
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
