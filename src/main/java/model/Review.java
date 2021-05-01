@@ -6,11 +6,18 @@ public class Review {
 
     private int id;
     private String shortText;
+    private String longText;
     private boolean spoilerAlert;
     private Date date;
     private String origin;
     private User user;
-
+    private String platform;
+    private String nick;
+    private String language;
+    private String country;
+    private String city;
+    private int likes;
+    private int dislikes;
 
     public Review() {}
 
@@ -61,4 +68,36 @@ public class Review {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public String getLongText() { return longText; }
+
+    public void setLongText(String longText) { this.longText = longText; }
+
+    public String getPlatform() { return platform; }
+
+    public void setPlatform(String platform) { this.platform = platform; }
+
+    public String getNick() { return nick; }
+
+    public void setNick(String nick) { this.nick = nick; }
+
+    public String getLanguage() { return language; }
+
+    public void setLanguage(String language) { this.language = language; }
+
+    public String getCountry() { return country; }
+
+    public void setCountry(String country) { this.country = country; }
+
+    public String getCity() { return city; }
+
+    public void setCity(String city) { this.city = city; }
+
+    public int getLikes() { return likes; }
+
+    public void setLikes(int likes) { this.likes = likes; }
+
+    public int getDislikes() { return dislikes; }
+
+    public void setDislikes(int dislikes) { this.dislikes = dislikes; }
 }
