@@ -1,11 +1,20 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model;
 
+import javax.persistence.*;
+import java.util.Collection;
+
+@Entity(name ="User")
 public class User {
 
+    @Id
+    @GeneratedValue
     private int id;
     private String name;
     private String lastName;
     private String platform;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private Collection<Review> reviews;
 
     public User() {
     }
@@ -41,4 +50,8 @@ public class User {
     public void setPlatform(String platform) {
         this.platform = platform;
     }
+
+    public Collection<Review> getReviews() { return reviews; }
+
+    public void setReviews(Collection<Review> reviews) { this.reviews = reviews; }
 }

@@ -1,20 +1,24 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity(name ="Report")
 public class Report {
 
-    private int reviewId;
+    @Id
+    @GeneratedValue
+    private int id;
     private Reason reason;
     private int reportAmount;
 
     public Report() {}
 
-    public int getReviewId() {
-        return reviewId;
-    }
 
-    public void setReviewId(int reviewId) {
-        this.reviewId = reviewId;
-    }
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id;}
 
     public Reason getReason() {
         return reason;
