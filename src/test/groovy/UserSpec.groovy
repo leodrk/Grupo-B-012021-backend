@@ -1,11 +1,11 @@
 package groovy
 
-import model.User
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.User
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
-@SpringBootTest(classes=User.class)
+@SpringBootTest(classes= User.class)
 class UserSpec extends Specification {
 
 
