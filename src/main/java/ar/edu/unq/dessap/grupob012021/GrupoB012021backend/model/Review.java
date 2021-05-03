@@ -1,16 +1,21 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model;
 
+import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
+@Entity(name ="Review")
 public class Review {
 
+    @Id
+    @GeneratedValue
     private int id;
     private String shortText;
     private String longText;
     private boolean spoilerAlert;
     private Date date;
     private String origin;
-    private User user;
     private String platform;
     private String nick;
     private String language;
@@ -18,6 +23,9 @@ public class Review {
     private String city;
     private int likes;
     private int dislikes;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "review_id")
+    private List<Report> reports;
 
     public Review() {}
 
@@ -61,14 +69,6 @@ public class Review {
         this.origin = origin;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public String getLongText() { return longText; }
 
     public void setLongText(String longText) { this.longText = longText; }
@@ -100,4 +100,9 @@ public class Review {
     public int getDislikes() { return dislikes; }
 
     public void setDislikes(int dislikes) { this.dislikes = dislikes; }
+
+    public List<Report> getReports() { return reports; }
+
+    public void setReports(List<Report> reports) { this.reports = reports; }
+
 }
