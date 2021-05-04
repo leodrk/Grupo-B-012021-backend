@@ -21,8 +21,8 @@ public class Review {
     private String language;
     private String country;
     private String city;
-    private int likes;
-    private int dislikes;
+    private int likes = 0;
+    private int dislikes = 0;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "review_id")
     private List<Report> reports;

@@ -1,7 +1,8 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service;
 
-import org.springframework.stereotype.Service;
+public interface ReviewService {
 
-@Service
-public class ReviewService {
+    void likeReview (int reviewId);
+
+    void dislikeReview (int reviewId);
 }
