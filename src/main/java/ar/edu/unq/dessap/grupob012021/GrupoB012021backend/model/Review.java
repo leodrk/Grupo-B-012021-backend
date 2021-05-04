@@ -26,6 +26,9 @@ public class Review {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "review_id")
     private List<Report> reports;
+    @ManyToOne
+    @JoinColumn(name = "content_id")
+    private Content referedContent;
 
     public Review() {}
 

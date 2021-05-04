@@ -2,7 +2,6 @@ package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model;
 
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -28,6 +27,8 @@ public class Content {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "content_id")
     private List<Episode> episodes;
+    @OneToMany(mappedBy = "referedContent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
 
     public int getId() { return id; }
 
@@ -73,6 +74,9 @@ public class Content {
 
     public void setEpisodes(List<Episode> episodes) { this.episodes = episodes; }
 
+    public List<Review> getReviews() { return reviews; }
+
+    public void setReviews(List<Review> reviews) { this.reviews = reviews; }
 
 }
 
