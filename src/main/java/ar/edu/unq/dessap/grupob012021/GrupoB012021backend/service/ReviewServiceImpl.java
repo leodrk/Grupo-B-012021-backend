@@ -24,12 +24,20 @@ public class ReviewServiceImpl implements ReviewService {
 
     public void dislikeReview (int reviewId) throws NoSuchElementException{
         Review review = reviewRepository.findById(reviewId).get();
-        review.setLikes(review.getDislikes()+1);
+        review.setDislikes(review.getDislikes()+1);
         reviewRepository.save(review);
     }
 
-    public List<Review> findByContentId(int contentId) throws NoSuchElementException{
+    public List<Review> findByContentId(int contentId){
         ArrayList<Review> review = (ArrayList) reviewRepository.findByContentId(contentId);
         return review;
+    }
+
+    public void save (Review review){
+        reviewRepository.save(review);
+    }
+
+    public Review findById (int reviewId) throws NoSuchElementException{
+        return reviewRepository.findById(reviewId).get();
     }
 }

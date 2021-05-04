@@ -23,7 +23,7 @@ public class Review {
     private String city;
     private int likes = 0;
     private int dislikes = 0;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "review_id")
     private List<Report> reports;
     @ManyToOne

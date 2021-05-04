@@ -21,8 +21,9 @@ public class ReviewController {
     private ReviewService reviewService;
 
 
-    @PostMapping("/review")
-    public ResponseEntity postReview(){
+    @PostMapping(value="/saveReview")
+    public ResponseEntity saveReview(@RequestBody Review review) {
+        this.reviewService.save(review);
         return new ResponseEntity(null, HttpStatus.OK);
     }
 
