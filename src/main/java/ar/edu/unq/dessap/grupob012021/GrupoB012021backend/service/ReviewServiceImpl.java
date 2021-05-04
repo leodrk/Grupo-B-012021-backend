@@ -5,6 +5,8 @@ import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.ReviewRep
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 
@@ -24,5 +26,10 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = reviewRepository.findById(reviewId).get();
         review.setLikes(review.getDislikes()+1);
         reviewRepository.save(review);
+    }
+
+    public List<Review> findByContentId(int contentId) throws NoSuchElementException{
+        ArrayList<Review> review = (ArrayList) reviewRepository.findByContentId(contentId);
+        return review;
     }
 }

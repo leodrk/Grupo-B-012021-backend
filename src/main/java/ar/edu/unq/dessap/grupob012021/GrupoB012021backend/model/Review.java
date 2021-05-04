@@ -28,7 +28,7 @@ public class Review {
     private List<Report> reports;
     @ManyToOne
     @JoinColumn(name = "content_id")
-    private Content referedContent;
+    private Content content;
 
     public Review() {}
 
@@ -107,5 +107,10 @@ public class Review {
     public List<Report> getReports() { return reports; }
 
     public void setReports(List<Report> reports) { this.reports = reports; }
+
+    public Content getContent() { return content; }
+
+    public void setContent(Content content) { this.content = content; }
+
 
 }

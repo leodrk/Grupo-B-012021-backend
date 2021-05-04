@@ -1,6 +1,8 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -27,7 +29,8 @@ public class Content {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "content_id")
     private List<Episode> episodes;
-    @OneToMany(mappedBy = "referedContent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
 
     public int getId() { return id; }
