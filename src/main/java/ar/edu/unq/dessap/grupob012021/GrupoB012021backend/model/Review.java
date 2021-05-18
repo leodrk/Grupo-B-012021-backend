@@ -23,6 +23,7 @@ public class Review {
     private String city;
     private int likes = 0;
     private int dislikes = 0;
+    private int rating;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "review_id")
     private List<Report> reports;
@@ -32,45 +33,25 @@ public class Review {
 
     public Review() {}
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(int id) { this.id = id; }
 
-    public String getShortText() {
-        return shortText;
-    }
+    public String getShortText() { return shortText; }
 
-    public void setShortText(String shortText) {
-        this.shortText = shortText;
-    }
+    public void setShortText(String shortText) { this.shortText = shortText; }
 
-    public boolean isSpoilerAlert() {
-        return spoilerAlert;
-    }
+    public boolean isSpoilerAlert() { return spoilerAlert; }
 
-    public void setSpoilerAlert(boolean spoilerAlert) {
-        this.spoilerAlert = spoilerAlert;
-    }
+    public void setSpoilerAlert(boolean spoilerAlert) { this.spoilerAlert = spoilerAlert; }
 
-    public Date getDate() {
-        return date;
-    }
+    public Date getDate() { return date; }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+    public void setDate(Date date) { this.date = date; }
 
-    public String getOrigin() {
-        return origin;
-    }
+    public String getOrigin() { return origin; }
 
-    public void setOrigin(String origin) {
-        this.origin = origin;
-    }
+    public void setOrigin(String origin) { this.origin = origin; }
 
     public String getLongText() { return longText; }
 
@@ -111,6 +92,11 @@ public class Review {
     public Content getContent() { return content; }
 
     public void setContent(Content content) { this.content = content; }
+
+    public int getRating() { return rating; }
+
+    public void setRating(int rating) { this.rating = rating; }
+
 
 
 }
