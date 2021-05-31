@@ -1,8 +1,6 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name ="Report")
 public class Report {
@@ -12,9 +10,17 @@ public class Report {
     private int id;
     private Reason reason;
     private int reportAmount;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "review_id")
+    private Review review;
 
     public Report() {}
 
+    public Report (Review review, Reason reason){
+        this.reportAmount = 1;
+        this.reason = reason;
+        this.review = review;
+    }
 
     public int getId() { return id; }
 
@@ -35,10 +41,10 @@ public class Report {
     public void setReportAmount(int reportAmount) {
         this.reportAmount = reportAmount;
     }
+
+    public Review getReview() { return review; }
+
+    public void setReview(Review review) { this.review = review; }
+
 }
 
-enum Reason {
-    SPOIL,
-    OFENSIVE,
-    NONSENSE
-}
