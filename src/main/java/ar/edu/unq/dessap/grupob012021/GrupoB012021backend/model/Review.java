@@ -1,7 +1,6 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -24,8 +23,7 @@ public class Review {
     private int likes = 0;
     private int dislikes = 0;
     private int rating;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "review_id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "review")
     private List<Report> reports;
     @ManyToOne
     @JoinColumn(name = "content_id")
