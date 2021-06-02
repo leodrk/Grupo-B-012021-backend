@@ -1,4 +1,8 @@
-package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model;
+package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review;
+
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Content;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Report;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,9 +14,11 @@ public class Review {
     @Id
     @GeneratedValue
     private int id;
+    private String type;
     private String shortText;
     private String longText;
     private boolean spoilerAlert;
+    @NotNull
     private Date date;
     private String origin;
     private String platform;
@@ -22,6 +28,7 @@ public class Review {
     private String city;
     private int likes = 0;
     private int dislikes = 0;
+    @NotNull
     private int rating;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "review")
     private List<Report> reports;
@@ -95,6 +102,9 @@ public class Review {
 
     public void setRating(int rating) { this.rating = rating; }
 
+    public String getType() { return type; }
+
+    public void setType(String type) { this.type = type; }
 
 
 }
