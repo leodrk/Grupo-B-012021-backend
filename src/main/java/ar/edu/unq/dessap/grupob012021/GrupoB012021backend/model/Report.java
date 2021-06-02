@@ -1,5 +1,6 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model;
 
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
 import javax.persistence.*;
 
 @Entity(name ="Report")

@@ -1,6 +1,7 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.controllers;
 
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Review;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewCriteriaDTO;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -57,5 +57,11 @@ public class ReviewController {
                 return new ResponseEntity<>(reviewList, HttpStatus.OK);
             }
             return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping(value = "/findByCriteria/{pageNumber}")
+    public ResponseEntity<List<Review>> getReviewByContent(@PathVariable(value="pageNumber") int pageNumber,
+                                                           @RequestBody ReviewCriteriaDTO reviewCriteria){
+            return new ResponseEntity<>(this.reviewService.findByCriteria(reviewCriteria, pageNumber), HttpStatus.OK);
     }
 }

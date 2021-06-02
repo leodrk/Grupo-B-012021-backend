@@ -1,7 +1,8 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service;
 
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Review;
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.ReviewRepository;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewCriteriaDTO;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.reviewRepository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
 
     public void likeReview (int reviewId) throws NoSuchElementException{
             Review review = reviewRepository.findById(reviewId).get();
@@ -39,5 +41,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     public Review findById (int reviewId) throws NoSuchElementException{
         return reviewRepository.findById(reviewId).get();
+    }
+
+    @Override
+    public List<Review> findByCriteria(ReviewCriteriaDTO reviewCriteria, int pageNumber) {
+        return reviewRepository.findByCriteria(reviewCriteria,pageNumber);
     }
 }

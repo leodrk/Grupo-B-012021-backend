@@ -1,6 +1,7 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service;
 
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Review;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewCriteriaDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface ReviewService {
     void save (Review review);
 
     Review findById(int reviewId) throws NoSuchElementException;
+
+    List<Review> findByCriteria (ReviewCriteriaDTO reviewCriteria, int pageNumber);
 }
