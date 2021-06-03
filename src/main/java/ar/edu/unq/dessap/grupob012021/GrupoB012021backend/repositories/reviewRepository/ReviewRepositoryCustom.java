@@ -8,4 +8,6 @@ import java.util.List;
 public interface ReviewRepositoryCustom {
 
     List<Review> findByCriteria (ReviewCriteriaDTO reviewCriteria, int pageNumber);
+
+    List<Review> findByCriteria (ReviewCriteriaDTO reviewCriteria);
 }

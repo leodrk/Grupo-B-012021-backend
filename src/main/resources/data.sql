@@ -5,8 +5,8 @@ insert into content values (3, 2011, true, true, 'US', 90000, 2019, 'Game of Thr
 
 --data fake temporal para probar busqueda de reviews con filtros
 --
---insert into review (id, country, language, platform, rating, spoiler_alert, likes, dislikes, date) values (1,'arg', 'spanish','netflix',5,false,1,1,'2011-02-12');
---insert into review (id, country, language, platform, rating, spoiler_alert, likes, dislikes, date) values (2,'arg', 'english','netflix',4,false,1,1,'2010-03-12');
+--insert into review (id, country, language, platform, rating, spoiler_alert, likes, dislikes, date, content_id) values (1,'arg', 'spanish','netflix',5,false,1,1,'2011-02-12',1);
+--insert into review (id, country, language, platform, rating, spoiler_alert, likes, dislikes, date, content_id) values (2,'arg', 'english','netflix',4,false,1,1,'2010-03-12',1);
 --insert into review (id, country, language, platform, rating, spoiler_alert, likes, dislikes, date) values (3,'chl', 'spanish','netflix',2,false,1,1,'2009-03-12');
 --insert into review (id, country, language, platform, rating, spoiler_alert, likes, dislikes, date) values (5,'arg', 'spanish','netflix',5,false,1,1,'2011-03-12');
 --insert into review (id, country, language, platform, rating, spoiler_alert, likes, dislikes, date) values (6,'arg', 'english','netflix',1,false,1,1,'2011-03-11');
