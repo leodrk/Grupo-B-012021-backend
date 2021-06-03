@@ -19,7 +19,16 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
     private EntityManager em;
 
     @Override
-    public List<Review> findByCriteria(ReviewCriteriaDTO reviewCriteria, int pageNumber) {
+    public List<Review> findByCriteria (ReviewCriteriaDTO reviewCriteria, int pageNumber){
+        return this.findByCriteria(reviewCriteria, pageNumber, true);
+    }
+
+    @Override
+    public List<Review> findByCriteria (ReviewCriteriaDTO reviewCriteria){
+        return this.findByCriteria(reviewCriteria, 0, false);
+    }
+
+    public List<Review> findByCriteria(ReviewCriteriaDTO reviewCriteria, int pageNumber, boolean pageable) {
         int pageSize = 10;
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Review> cr = cb.createQuery(Review.class);
@@ -36,6 +45,12 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
         }
         if (reviewCriteria.getLanguage() != null){
             predicates.add(cb.equal(root.get("language"), reviewCriteria.getLanguage()));
+        }
+        if (reviewCriteria.getRating() > 0){
+            predicates.add(cb.ge(root.get("rating"), reviewCriteria.getRating()));
+        }
+        if (reviewCriteria.getLikes() > 0){
+            predicates.add(cb.ge(root.get("likes"), reviewCriteria.getLikes()));
         }
         if (reviewCriteria.isSpoilerAlert()){
             predicates.add(cb.isTrue(root.get("spoilerAlert")));
@@ -54,8 +69,10 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
         cr.select(root).where(predicates.toArray(Predicate[]::new));
 
         Query query = em.createQuery(cr);
-        query.setFirstResult((pageNumber-1) * pageSize);
-        query.setMaxResults(pageSize);
+        if (pageable) {
+            query.setFirstResult((pageNumber - 1) * pageSize);
+            query.setMaxResults(pageSize);
+        }
         return query.getResultList();
     }
 }
