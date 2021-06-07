@@ -16,6 +16,7 @@
 	<description>Proyecto Backend del grupo Grupo-B-012021 de la materia desarrollo de aplicaciones</description>
 	<properties>
 		<java.version>11</java.version>
+		<sonar.tests>src/test/groovy</sonar.tests>
 		<sonar.tests>src/test/java</sonar.tests>
 	</properties>
 	<dependencies>
@@ -80,6 +81,20 @@
 			<version>2.0-M5-groovy-2.5</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>2.13.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jacoco</groupId>
+			<artifactId>jacoco-maven-plugin</artifactId>
+			<version>0.8.7</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -120,6 +135,25 @@
 						<include>**/*Test.java</include> <!-- Just in case of having also "normal" JUnit tests -->
 					</includes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.7</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
