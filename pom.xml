@@ -16,7 +16,6 @@
 	<description>Proyecto Backend del grupo Grupo-B-012021 de la materia desarrollo de aplicaciones</description>
 	<properties>
 		<java.version>11</java.version>
-		<sonar.tests>src/test/groovy</sonar.tests>
 		<sonar.tests>src/test/java</sonar.tests>
 	</properties>
 	<dependencies>
@@ -82,6 +81,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>2.13.0</version>
@@ -93,39 +96,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.gmavenplus</groupId>
-				<artifactId>gmavenplus-plugin</artifactId>
-				<version>1.8.1</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-							<goal>compileTests</goal>
-						</goals>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.codehaus.groovy</groupId>
-						<artifactId>groovy-all</artifactId>
-						<version>2.5.11</version>
-						<scope>runtime</scope>
-						<type>pom</type>
-					</dependency>
-				</dependencies>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M4</version>
-				<configuration>
-					<includes>
-						<include>**/*Spec.java</include> <!-- Yes, .java extension -->
-						<include>**/*Test.java</include> <!-- Just in case of having also "normal" JUnit tests -->
-					</includes>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

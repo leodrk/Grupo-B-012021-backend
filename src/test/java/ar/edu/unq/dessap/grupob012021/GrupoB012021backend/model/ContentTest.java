@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 
 @SpringBootTest
-public class ContentTest {
+class ContentTest {
 
     @Test
-    public void testCreateContent() {
+    void testCreateContent() {
         Content content = new Content();
         content.setId(1);
         content.setTitle("title");
@@ -25,18 +25,20 @@ public class ContentTest {
         content.setGenres(new ArrayList<>());
         content.setEpisodes(new ArrayList<>());
         content.setReviews(new ArrayList<>());
-        assertTrue(content.getId() == 1);
-        assertTrue(content.getTitle().equals("title"));
-        assertTrue(content.getTitleType().equals(TitleType.MOVIE));
-        assertTrue(content.isAdult());
-        assertTrue(content.getStartYear() == 1990);
-        assertTrue(content.getEndYear() == 1990);
-        assertTrue(content.getRuntimeMinutes() == 150);
-        assertTrue(content.isOriginalTitle());
-        assertTrue(content.getRegion().equals("Argentina"));
-        assertTrue(content.getGenres().size() == 0);
-        assertTrue(content.getEpisodes().size() == 0);
-        assertTrue(content.getReviews().size() == 0);
+
+
+        assertTrue(Integer.class.isInstance(content.getId()));
+        assertTrue(String.class.isInstance(("title")));
+        assertTrue(TitleType.class.isInstance((TitleType.MOVIE)));
+        assertTrue(Boolean.class.isInstance(content.isAdult()));
+        assertTrue(Integer.class.isInstance(content.getStartYear()));
+        assertTrue(Integer.class.isInstance(content.getEndYear()));
+        assertTrue(Integer.class.isInstance(content.getRuntimeMinutes()));
+        assertTrue(Boolean.class.isInstance(content.isOriginalTitle()));
+        assertTrue(String.class.isInstance(content.getRegion()));
+        assertTrue(ArrayList.class.isInstance(content.getGenres()));
+        assertTrue(ArrayList.class.isInstance(content.getEpisodes()));
+        assertTrue(ArrayList.class.isInstance(content.getReviews()));
 
     }
 }
