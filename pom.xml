@@ -16,7 +16,6 @@
 	<description>Proyecto Backend del grupo Grupo-B-012021 de la materia desarrollo de aplicaciones</description>
 	<properties>
 		<java.version>11</java.version>
-		<sonar.tests>src/test/groovy</sonar.tests>
 		<sonar.tests>src/test/java</sonar.tests>
 	</properties>
 	<dependencies>
