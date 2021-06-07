@@ -16,7 +16,6 @@
 	<description>Proyecto Backend del grupo Grupo-B-012021 de la materia desarrollo de aplicaciones</description>
 	<properties>
 		<java.version>11</java.version>
-		<sonar.tests>src/test/groovy</sonar.tests>
 		<sonar.tests>src/test/java</sonar.tests>
 	</properties>
 	<dependencies>
@@ -80,6 +79,10 @@
 			<artifactId>spock-spring</artifactId>
 			<version>2.0-M5-groovy-2.5</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
