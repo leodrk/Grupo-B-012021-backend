@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 
 @Service
@@ -19,15 +20,21 @@ public class ReviewServiceImpl implements ReviewService {
 
 
     public void likeReview (int reviewId) throws NoSuchElementException{
-            Review review = reviewRepository.findById(reviewId).get();
-            review.setLikes(review.getLikes() + 1);
-            reviewRepository.save(review);
+            Optional<Review> optionalReview = reviewRepository.findById(reviewId);
+            if (optionalReview.isPresent()) {
+                Review review = optionalReview.get();
+                review.setLikes(review.getLikes() + 1);
+                reviewRepository.save(review);
+            }
     }
 
     public void dislikeReview (int reviewId) throws NoSuchElementException{
-        Review review = reviewRepository.findById(reviewId).get();
-        review.setDislikes(review.getDislikes()+1);
-        reviewRepository.save(review);
+        Optional<Review> optionalReview = reviewRepository.findById(reviewId);
+        if (optionalReview.isPresent()) {
+            Review review = optionalReview.get();
+            review.setDislikes(review.getDislikes() + 1);
+            reviewRepository.save(review);
+        }
     }
 
     public List<Review> findByContentId(int contentId){
@@ -40,8 +47,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     public Review findById (int reviewId) throws NoSuchElementException{
-        return reviewRepository.findById(reviewId).get();
+        Optional<Review> optionalReview = reviewRepository.findById(reviewId);
+        if (optionalReview.isPresent()) {
+            return optionalReview.get();
+        }
+        return null;
     }
+
 
     @Override
     public List<Review> findByCriteria(ReviewCriteriaDTO reviewCriteria, int pageNumber) {

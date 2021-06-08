@@ -7,6 +7,7 @@ import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.ReportRep
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class ReportServiceImpl implements ReportService {
@@ -19,13 +20,13 @@ public class ReportServiceImpl implements ReportService {
     public void reportReview (int reviewId, int reason) throws NoSuchElementException {
         Review review = reviewService.findById(reviewId);
         Report report;
-        if (review.getReports().stream().anyMatch(r -> reason == r.getReason().ordinal())){
-            report = review
-                            .getReports()
-                            .stream()
-                            .filter(r -> reason == r.getReason().ordinal())
-                            .findFirst()
-                            .get();
+        Optional<Report> optionalReports = review
+                .getReports()
+                .stream()
+                .filter(r -> reason == r.getReason().ordinal())
+                .findFirst();
+        if (optionalReports.isPresent()){
+            report = optionalReports.get();
             report.setReportAmount(report.getReportAmount() + 1);
         }
         else{
