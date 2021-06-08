@@ -29,7 +29,7 @@ public class ReviewController {
     }
 
     @PostMapping(value = "/like/{review}")
-    public ResponseEntity likeValidateReview(@PathVariable(value="review") int review){
+    public ResponseEntity likeReview(@PathVariable(value="review") int review){
         try {
             reviewService.likeReview(review);
         }
@@ -40,7 +40,7 @@ public class ReviewController {
     }
 
     @PostMapping(value = "/dislike/{review}")
-    public ResponseEntity dislikeValidateReview(@PathVariable(value="review") int review){
+    public ResponseEntity dislikeReview(@PathVariable(value="review") int review){
         try {
             reviewService.dislikeReview(review);
         }
@@ -60,7 +60,7 @@ public class ReviewController {
     }
 
     @GetMapping(value = "/findByCriteria/{pageNumber}")
-    public ResponseEntity<List<Review>> getReviewByContent(@PathVariable(value="pageNumber") int pageNumber,
+    public ResponseEntity<List<Review>> getReviewByCriteria(@PathVariable(value="pageNumber") int pageNumber,
                                                            @RequestBody ReviewCriteriaDTO reviewCriteria){
             return new ResponseEntity<>(this.reviewService.findByCriteria(reviewCriteria, pageNumber), HttpStatus.OK);
     }
