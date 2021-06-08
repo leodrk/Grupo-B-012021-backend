@@ -17,6 +17,10 @@
 	<properties>
 		<java.version>11</java.version>
 		<sonar.tests>src/test/groovy</sonar.tests>
+		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.language>java</sonar.language>
+		<sonar.coverage.jacoco.xmlReportPaths>{${project.build.directory}}/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -149,9 +153,12 @@
 						<exclude>**/ServletInitializer.*</exclude>
 						<exclude>**/GrupoB012021BackendApplication.*</exclude>
 					</excludes>
+					<destFile>${sonar.jacoco.reportPath}</destFile>
+					<append>true</append>
 				</configuration>
 				<executions>
 					<execution>
+						<id>agent</id>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
