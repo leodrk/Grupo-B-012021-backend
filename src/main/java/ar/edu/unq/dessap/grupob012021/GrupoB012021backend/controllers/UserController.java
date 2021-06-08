@@ -22,7 +22,6 @@ public class UserController {
     public ResponseEntity reportReview(@PathVariable(value="user") String user, @PathVariable(value="password") String password, @PathVariable(value="platform") String platform){
         try {
             userService.save(user, password, platform);
-            String token = 
         }
         catch (Exception e){
             return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
