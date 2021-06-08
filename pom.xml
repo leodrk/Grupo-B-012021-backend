@@ -140,6 +140,17 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.7</version>
+				<configuration>
+					<excludes>
+						<exclude>ar/edu/unq/dessap/grupob012021/GrupoB012021backend/model/**/*</exclude>
+						<exclude>ar/edu/unq/dessap/grupob012021/GrupoB012021backend/repositories/**/*</exclude>
+						<exclude>ar/edu/unq/dessap/grupob012021/GrupoB012021backend/repositories/**/*</exclude>
+						<exclude>**/SpringFoxConfig.*</exclude>
+						<exclude>**/ServletInitializer.*</exclude>
+						<exclude>**/ServletInitializer.*</exclude>
+						<exclude>**/GrupoB012021BackendApplication.*</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>

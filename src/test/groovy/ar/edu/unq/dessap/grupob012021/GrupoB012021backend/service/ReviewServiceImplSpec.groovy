@@ -1,93 +1,113 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service
 
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Content
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review
-import org.springframework.beans.factory.annotation.Autowired
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewCriteriaDTO
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.reviewRepository.ReviewRepository
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
 @SpringBootTest
 class ReviewServiceImplSpec extends Specification{
 
-    @Autowired
-    private ReviewServiceImpl reviewServiceImpl
+    ReviewRepository reviewRepository = Mock(ReviewRepository)
+    ReviewServiceImpl reviewServiceImpl = new ReviewServiceImpl(reviewRepository: reviewRepository)
 
 
-    def "cuando se llama a save con un review con id 1, el mismo debe estar en base de datos"(){
+    def "when save method is called with a review, it must call the method save from reviewRepository"(){
         given:
-        Review review = new Review();
-        review.setId(1)
-
-        when:
-        reviewServiceImpl.save(review);
-
-        then:
-        reviewServiceImpl.findById(1).getId() == review.getId()
-    }
-
-    def "cuando se likea un review con 3 likes, el mismo pasa a tener 4"(){
-        given:
-        Review review = new Review();
-        review.setId(1)
-        review.setLikes(3)
+        def review = new Review()
 
         when:
         reviewServiceImpl.save(review)
+
+        then:
+        1 * reviewRepository.save(review)
+    }
+
+    def "when findById method is called with a review, it must call the method findById from reviewRepository"(){
+        given:
+        def review = new Review()
+        def id = 1
+
+        when:
+        reviewServiceImpl.findById(id)
+
+        then:
+        1 * reviewRepository.findById(id) >> Optional.of(review)
+    }
+
+    def "when likeReview is called with a review with 1 like, it must set its likes to 2 and save it"(){
+        given:
+        def review = new Review();
+        review.setId(1)
+        review.setLikes(1)
+        reviewRepository.findById(_ as Integer) >> Optional.of(review)
+
+
+        when:
         reviewServiceImpl.likeReview(review.getId())
 
         then:
-        reviewServiceImpl.findById(1).getLikes() == 4
+        review.getLikes() == 2
+        1 * reviewRepository.save(review)
     }
 
-    def "likear un review inexistente debe lanzar NoSuchElementException"(){
+    def "when likeReview is called with no existing review, it must throw NoSuchElementException"(){
         given:
+        reviewRepository.findById(_ as Integer) >> {throw new NoSuchElementException()}
 
         when:
         reviewServiceImpl.likeReview(6)
 
         then:
         thrown NoSuchElementException
-
     }
 
-    def "dislikear un review inexistente debe lanzar NoSuchElementException"(){
+    def "when dislikeReview is called with a review with 1 like, it must set its likes to 0 and save it"(){
         given:
-
-        when:
-        reviewServiceImpl.dislikeReview(8)
-
-        then:
-        thrown NoSuchElementException
-
-    }
-
-    def "cuando se dislikea un review con 3 dislikes, el mismo pasa a tener 4"(){
-        given:
-        Review review = new Review();
+        def review = new Review();
         review.setId(1)
-        review.setDislikes(3)
+        review.setDislikes(1)
+        reviewRepository.findById(_ as Integer) >> Optional.of(review)
+
 
         when:
-        reviewServiceImpl.save(review)
         reviewServiceImpl.dislikeReview(review.getId())
 
         then:
-        reviewServiceImpl.findById(1).getDislikes() == 4
+        review.getLikes() == 0
+        1 * reviewRepository.save(review)
     }
 
-    def "cuando se llama a findByContentId con un content id asociado a un review se debe obtener el mismo"(){
+    def "when dislikeReview is called with no existing review, it must throw NoSuchElementException"(){
         given:
-        Review review = new Review();
-        review.setId(2)
-        Content content = new Content();
-        content.setId(1)
-        review.setContent(content)
+        reviewRepository.findById(_ as Integer) >> {throw new NoSuchElementException()}
 
         when:
-        reviewServiceImpl.save(review)
+        reviewServiceImpl.dislikeReview(6)
 
         then:
-        reviewServiceImpl.findByContentId(1).get(0).getId() == review.getId()
-        reviewServiceImpl.findByContentId(1).size() == 1
+        thrown NoSuchElementException
+    }
+
+    def "when findByContentId is called it must call reviewRepository.findByContentId and return the resulting array"(){
+        given:
+
+        when:
+        reviewServiceImpl.findByContentId(1)
+
+        then:
+        1 * reviewRepository.findByContentId(1)
+    }
+
+    def "when findByCriteria is called it must call reviewRepository.findByCriteria"(){
+        given:
+        def criteria = Mock(ReviewCriteriaDTO)
+
+        when:
+        reviewServiceImpl.findByCriteria(criteria,1)
+
+        then:
+        1 * reviewRepository.findByCriteria(criteria,1)
     }
 }
