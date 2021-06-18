@@ -1,8 +1,14 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service;
 
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.user.User;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public interface UserService {
-    void save(String user, String password, String platform);
+
+    void save(User user);
+
+    Optional<User> findByUsernameAndPassword(String username, String password);
 }
