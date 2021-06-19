@@ -1,7 +1,11 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.controllers;
 
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.user.User;
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.user.UserDTO;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.SubscriberLog;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.Content;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.User;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.UserDTO;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ContentService;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.SubscriberLogService;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.UserService;
 import com.google.common.hash.Hashing;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,6 +19,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.*;
 import io.jsonwebtoken.Jwts;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +33,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private ContentService contentService;
+    @Autowired
+    private SubscriberLogService subscriberLogService;
+    @Autowired
+    private HttpServletRequest request;
 
     @PostMapping(value = "/register")
     public ResponseEntity register(@RequestBody UserDTO userDTO){
@@ -53,10 +64,45 @@ public class UserController {
         if (savedUser.isPresent()) {
             User returnUser = savedUser.get();
             returnUser.setToken(getJWTToken(userDTO.getUsername()));
+            request.getSession().setAttribute("user", returnUser);
             return new ResponseEntity(returnUser, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
+
+    @PostMapping(value = "/subscribe/{contentId}")
+    public ResponseEntity subscribeToContent (@PathVariable(value="contentId") int contentId){
+        try {
+            User user = (User) request.getSession().getAttribute("user");
+            String platform = user.getPlatform();
+            Optional<Content> optionalContent = contentService.findById(contentId);
+            if (optionalContent.isPresent()) {
+                Content content = optionalContent.get();
+                if (!content.getSubscribers().contains(platform)) {
+                    content.addSubscriber(platform);
+                    contentService.save(content);
+                }
+                return new ResponseEntity("Suscriptor agregado", HttpStatus.OK);
+            }
+            return new ResponseEntity("No se ha encontrado el contenido asociado al id ingresado", HttpStatus.BAD_REQUEST);
+
+        } catch (Exception e) {
+            return new ResponseEntity("Ha ocurrido un error al intentar agregar el suscriptor", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/getNotifications")
+    public ResponseEntity<List<SubscriberLog>> getNotifications(HttpServletRequest request) {
+        try {
+            User user = (User) request.getSession().getAttribute("user");
+            String platform = user.getPlatform();
+            List<SubscriberLog> subscriberLog = subscriberLogService.findByPlatform(platform);
+            return new ResponseEntity(subscriberLog, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity("Ha ocurrido un error al intentar obtener las notificaciones", HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     private String getJWTToken(String username) {
         String secretKey = "grupob012021BackendDappSecretKey";

@@ -1,7 +1,7 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service;
 
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Reason;
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Report;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.report.Reason;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.report.Report;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
