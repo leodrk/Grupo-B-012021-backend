@@ -6,7 +6,7 @@ import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.reviewRep
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
-@SpringBootTest
+@SpringBootTest (classes = ReviewServiceImplSpec.class)
 class ReviewServiceImplSpec extends Specification{
 
     ReviewRepository reviewRepository = Mock(ReviewRepository)

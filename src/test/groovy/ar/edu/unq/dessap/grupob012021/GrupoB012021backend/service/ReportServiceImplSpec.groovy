@@ -1,13 +1,13 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service
 
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Reason
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Report
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.report.Reason
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.report.Report
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.ReportRepository
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
-@SpringBootTest
+@SpringBootTest (classes = ReportServiceImplSpec.class)
 class ReportServiceImplSpec extends Specification{
 
     ReportRepository reportRepository = Mock(ReportRepository)

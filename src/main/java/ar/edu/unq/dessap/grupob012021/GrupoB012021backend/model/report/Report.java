@@ -1,4 +1,4 @@
-package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model;
+package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.report;
 
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
 import javax.persistence.*;

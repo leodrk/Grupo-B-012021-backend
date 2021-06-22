@@ -1,7 +1,7 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review;
 
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Content;
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Report;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.Content;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.report.Report;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;

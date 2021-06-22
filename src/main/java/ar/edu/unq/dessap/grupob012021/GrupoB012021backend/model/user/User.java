@@ -1,4 +1,4 @@
-package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.user;
+package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user;
 
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
 import javax.persistence.*;
@@ -16,6 +16,8 @@ public class User {
     private String password;
     private String platform;
     private String token;
+    @Enumerated(EnumType.STRING)
+    private Role role;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id")
     private Collection<Review> reviews;
@@ -68,6 +70,10 @@ public class User {
     public String getToken() { return token; }
 
     public void setToken(String token) { this.token = token; }
+
+    public Role getRole() { return role; }
+
+    public void setRole(Role role) { this.role = role; }
 
 }
 

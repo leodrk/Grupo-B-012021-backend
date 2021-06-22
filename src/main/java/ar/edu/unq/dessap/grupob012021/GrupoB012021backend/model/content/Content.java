@@ -1,4 +1,4 @@
-package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model;
+package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content;
 
 
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
@@ -33,6 +33,8 @@ public class Content {
     @JsonIgnore
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
+    @ElementCollection
+    private List<String> subscribers;
 
     public int getId() { return id; }
 
@@ -82,16 +84,12 @@ public class Content {
 
     public void setReviews(List<Review> reviews) { this.reviews = reviews; }
 
+    public List<String> getSubscribers() { return subscribers; }
+
+    public void setSubscribers(List<String> subscribers) { this.subscribers = subscribers; }
+
+    public void addSubscriber(String subscriber){
+        this.subscribers.add(subscriber);
+    }
 }
 
-enum TitleType {
-    SERIE,
-    MOVIE
-}
-
-enum Genre {
-    DRAMA,
-    TERROR,
-    ACTION,
-    COMEDY
-}

@@ -57,6 +57,7 @@ public class GrupoB012021BackendApplication {
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowedOrigins(Arrays.asList("http://localhost:8000"));
+		configuration.setAllowedOrigins(Arrays.asList("https://grupo-b-012021-frontend.herokuapp.com/"));
 		configuration.setAllowedMethods(Arrays.asList("*"));
 		configuration.setAllowCredentials(true);
 		configuration.addAllowedHeader("*");

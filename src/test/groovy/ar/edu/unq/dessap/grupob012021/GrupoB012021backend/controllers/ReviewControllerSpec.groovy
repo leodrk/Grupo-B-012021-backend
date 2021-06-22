@@ -1,28 +1,46 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.controllers
 
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.Content
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewCriteriaDTO
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.User
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ContentService
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ReviewService
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.SubscriberLogService
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import spock.lang.Specification
 
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpSession
+
 @SpringBootTest(classes = ReviewControllerSpec.class)
 class ReviewControllerSpec extends Specification{
 
     ReviewService reviewService = Mock(ReviewService)
-    ReviewController reviewController = new ReviewController(reviewService: reviewService)
+    SubscriberLogService subscriberLogService = Mock(SubscriberLogService)
+    HttpServletRequest request = Mock(HttpServletRequest)
+    ContentService contentService = Mock(ContentService)
+    ReviewController reviewController = new ReviewController(reviewService: reviewService,
+                                                             subscriberLogService: subscriberLogService,
+                                                             request : request,
+                                                             contentService: contentService)
 
 
     def "when saveReview is called properly it must return a responseentity with the status ok"(){
         given:
         def review = new Review()
         def responseEntity = new ResponseEntity(null, HttpStatus.OK)
+        def session = Mock(HttpSession)
+        def content = new Content()
+        request.getSession() >> session
+        session.getAttribute(_) >> new User()
+        contentService.findById(_) >> Optional.of(content)
 
 
         when:
-        def result = reviewController.saveReview(review)
+        def result = reviewController.saveReview(review, 1)
 
         then:ReviewControllerSpec
         1 * reviewService.save(review)

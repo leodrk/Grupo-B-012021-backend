@@ -1,16 +1,13 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service
 
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Content
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Reason
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Report
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.Content
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewCriteriaDTO
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.ContentRepository
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.reviewRepository.ReviewRepository
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
-@SpringBootTest
+@SpringBootTest(classes = ContentServiceImplSpec.class)
 class ContentServiceImplSpec extends Specification{
 
     ContentRepository contentRepository = Mock(ContentRepository)
