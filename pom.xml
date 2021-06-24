@@ -36,6 +36,10 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>3.0.0</version>
@@ -70,7 +74,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -170,9 +173,8 @@
 						<exclude>ar/edu/unq/dessap/grupob012021/GrupoB012021backend/model/**/*</exclude>
 						<exclude>ar/edu/unq/dessap/grupob012021/GrupoB012021backend/repositories/**/*</exclude>
 						<exclude>ar/edu/unq/dessap/grupob012021/GrupoB012021backend/repositories/**/*</exclude>
-						<exclude>**/SpringFoxConfig.*</exclude>
 						<exclude>**/ServletInitializer.*</exclude>
-						<exclude>**/ServletInitializer.*</exclude>
+						<exclude>**/WebSecurityConfig.*</exclude>
 						<exclude>**/GrupoB012021BackendApplication.*</exclude>
 					</excludes>
 					<destFile>${sonar.jacoco.reportPath}</destFile>
