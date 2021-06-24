@@ -1,6 +1,7 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service;
 
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.Content;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.ContentDTO;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewCriteriaDTO;
 import org.springframework.stereotype.Service;
@@ -16,4 +17,6 @@ public interface ContentService {
     Optional<Content> findById(int contentId);
 
     void save(Content content);
+
+    ContentDTO getContentInfo (int contentId);
 }

@@ -98,6 +98,11 @@ insert into content values (98,2011,true,false,'PL',9000,1989,'Sta', 'MOVIE');
 insert into content values (99,1997,true,true,'CN',9000,1999,'Zero Effec', 'MOVIE');
 insert into content values (100,2008,false,false,'GQ',9000,2005,'Lisa', 'MOVIE');
 
+
+
+insert into review (id,likes,dislikes,spoiler_alert,content_id,rating) values (2,1,1,false,1,1);
+
+insert into review (id,likes,dislikes,spoiler_alert,content_id,rating) values (1,1,1,false,1,5);
 --data fake temporal para probar busqueda de reviews con filtros
 --
 --insert into review (id, country, language, platform, rating, spoiler_alert, likes, dislikes, date, content_id) values (1,'arg', 'spanish','netflix',5,false,1,1,'2011-02-12',1);
