@@ -22,24 +22,29 @@ public class ReviewServiceImpl implements ReviewService {
     public void likeReview (int reviewId) throws NoSuchElementException{
             Optional<Review> optionalReview = reviewRepository.findById(reviewId);
             if (optionalReview.isPresent()) {
-                Review review = optionalReview.get();
+                var review = optionalReview.get();
                 review.setLikes(review.getLikes() + 1);
                 reviewRepository.save(review);
+            }
+            else{
+                throw new NoSuchElementException();
             }
     }
 
     public void dislikeReview (int reviewId) throws NoSuchElementException{
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
         if (optionalReview.isPresent()) {
-            Review review = optionalReview.get();
+            var review = optionalReview.get();
             review.setDislikes(review.getDislikes() + 1);
             reviewRepository.save(review);
+        }
+        else{
+            throw new NoSuchElementException();
         }
     }
 
     public List<Review> findByContentId(int contentId){
-        ArrayList<Review> review = (ArrayList) reviewRepository.findByContentId(contentId);
-        return review;
+        return reviewRepository.findByContentId(contentId);
     }
 
     public void save (Review review){
@@ -51,7 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
         if (optionalReview.isPresent()) {
             return optionalReview.get();
         }
-        return null;
+        throw new NoSuchElementException();
     }
 
 

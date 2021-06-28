@@ -3,6 +3,7 @@ package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.controllers;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.Content;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewCriteriaDTO;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewDTO;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.User;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ContentService;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ReviewService;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
@@ -36,20 +38,24 @@ public class ReviewController {
     private HttpServletRequest request;
 
     @PostMapping(value="/saveReview/{contentId}")
-    public ResponseEntity saveReview(@RequestBody Review review, @PathVariable(value="contentId") int contentId) {
-        User user = (User) request.getSession().getAttribute("user");
+    public ResponseEntity saveReview(@RequestBody ReviewDTO reviewDTO, @PathVariable(value="contentId") int contentId) {
+        var user = (User) request.getSession().getAttribute("user");
         String platform = user.getPlatform();
         Content content;
-        try{
-            content = contentService.findById(contentId).get();
+        Optional<Content> optionalContent = contentService.findById(contentId);
+        if(optionalContent.isPresent()) {
+            content = optionalContent.get();
         }
-        catch (NoSuchElementException e){
+        else {
             return new ResponseEntity("El contenido no existe", HttpStatus.BAD_REQUEST);
         }
-        review.setContent(content);
+        reviewDTO.setContent(content);
+        reviewDTO.setUserName(user.getName()+ " " + user.getLastName());
+        reviewDTO.setPlatform(user.getPlatform());
+        Review review = getReviewFromDTO(reviewDTO);
         reviewService.save(review);
         subscriberLogService.notifySubscribers(review, platform);
-        return new ResponseEntity(null, HttpStatus.OK);
+        return new ResponseEntity("Review guardado satisfactoriamente", HttpStatus.OK);
     }
 
     @PostMapping(value = "/like/{review}")
@@ -77,7 +83,7 @@ public class ReviewController {
     @GetMapping(value = "/findbycontent/{content}")
     public ResponseEntity<List<Review>> getReviewByContent(@PathVariable(value="content") int contentId){
             ArrayList<Review> reviewList = (ArrayList) reviewService.findByContentId(contentId);
-            if (reviewList.size() > 0){
+            if (!reviewList.isEmpty()){
                 return new ResponseEntity<>(reviewList, HttpStatus.OK);
             }
             return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
@@ -87,5 +93,21 @@ public class ReviewController {
     public ResponseEntity<List<Review>> getReviewByCriteria(@PathVariable(value="pageNumber") int pageNumber,
                                                            @RequestBody ReviewCriteriaDTO reviewCriteria){
             return new ResponseEntity<>(this.reviewService.findByCriteria(reviewCriteria, pageNumber), HttpStatus.OK);
+    }
+
+    private Review getReviewFromDTO(ReviewDTO reviewDTO){
+        Review review = new Review();
+        review.setType(reviewDTO.getType());
+        review.setShortText(reviewDTO.getShortText());
+        review.setLongText(reviewDTO.getLongText());
+        review.setSpoilerAlert(reviewDTO.isSpoilerAlert());
+        review.setOrigin(reviewDTO.getOrigin());
+        review.setLanguage(reviewDTO.getLanguage());
+        review.setCountry(reviewDTO.getCountry());
+        review.setCity(reviewDTO.getCity());
+        review.setRating(reviewDTO.getRating());
+        review.setPlatform(reviewDTO.getPlatform());
+        review.setUserName(reviewDTO.getUserName());
+        return review;
     }
 }

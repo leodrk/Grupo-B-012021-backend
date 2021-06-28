@@ -33,10 +33,11 @@ public class ContentServiceImpl implements ContentService {
 
     @Cacheable(value = "contentInfo")
     public ContentDTO getContentInfo(int contentId) throws NoSuchElementException{
+        System.out.println("obteniendo informacion de contenido");
         Optional<Content> optionalContent = contentRepository.findById(contentId);
         if (optionalContent.isPresent()){
-            Content content = optionalContent.get();
-            ContentDTO contentDTO = new ContentDTO(content);
+            var content = optionalContent.get();
+            var contentDTO = new ContentDTO(content);
             contentDTO.setReviewCount(content.getReviews().size());
             contentDTO.setAverageRating(getAverageRating(content.getReviews()));
             return contentDTO;

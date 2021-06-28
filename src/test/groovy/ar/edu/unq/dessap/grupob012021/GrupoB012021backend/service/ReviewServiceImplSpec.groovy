@@ -36,6 +36,17 @@ class ReviewServiceImplSpec extends Specification{
         1 * reviewRepository.findById(id) >> Optional.of(review)
     }
 
+    def "when findById is called with a non existing id, it should throw NoSuchElementException"(){
+        given:
+        reviewRepository.findById(_) >> Optional.empty()
+
+        when:
+        reviewServiceImpl.findById(1)
+
+        then:
+        thrown NoSuchElementException
+    }
+
     def "when likeReview is called with a review with 1 like, it must set its likes to 2 and save it"(){
         given:
         def review = new Review();
@@ -54,7 +65,7 @@ class ReviewServiceImplSpec extends Specification{
 
     def "when likeReview is called with no existing review, it must throw NoSuchElementException"(){
         given:
-        reviewRepository.findById(_ as Integer) >> {throw new NoSuchElementException()}
+        reviewRepository.findById(_ as Integer) >> Optional.empty()
 
         when:
         reviewServiceImpl.likeReview(6)
@@ -81,7 +92,7 @@ class ReviewServiceImplSpec extends Specification{
 
     def "when dislikeReview is called with no existing review, it must throw NoSuchElementException"(){
         given:
-        reviewRepository.findById(_ as Integer) >> {throw new NoSuchElementException()}
+        reviewRepository.findById(_ as Integer) >> Optional.empty()
 
         when:
         reviewServiceImpl.dislikeReview(6)

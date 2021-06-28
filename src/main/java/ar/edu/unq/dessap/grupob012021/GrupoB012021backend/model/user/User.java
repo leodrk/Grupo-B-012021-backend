@@ -2,10 +2,11 @@ package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user;
 
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 
 @Entity(name ="User")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue
