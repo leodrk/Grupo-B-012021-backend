@@ -42,17 +42,16 @@ public class UserController {
 
     @PostMapping(value = "/register")
     public ResponseEntity register(@RequestBody UserDTO userDTO){
-        User user = getUserfromDTO(userDTO);
         try {
-            user.setPassword(Hashing.sha256()
-                            .hashString(user.getPassword(), StandardCharsets.UTF_8)
+            userDTO.setPassword(Hashing.sha256()
+                            .hashString(userDTO.getPassword(), StandardCharsets.UTF_8)
                             .toString());
-            userService.save(user);
+            userService.save(userDTO);
         }
         catch (Exception e){
-            return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("ocurrio un error en la creacion del usuario", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(null, HttpStatus.OK);
+        return new ResponseEntity("usuario creado satisfactoriamente", HttpStatus.OK);
     }
 
     @PostMapping(value = "/login")
@@ -67,40 +66,30 @@ public class UserController {
             request.getSession().setAttribute("user", returnUser);
             return new ResponseEntity(returnUser, HttpStatus.OK);
         }
-        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity("ocurrio un error en el login", HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping(value = "/subscribe/{contentId}")
     public ResponseEntity subscribeToContent (@PathVariable(value="contentId") int contentId){
-        try {
-            User user = (User) request.getSession().getAttribute("user");
-            String platform = user.getPlatform();
-            Optional<Content> optionalContent = contentService.findById(contentId);
-            if (optionalContent.isPresent()) {
-                Content content = optionalContent.get();
-                if (!content.getSubscribers().contains(platform)) {
-                    content.addSubscriber(platform);
-                    contentService.save(content);
-                }
-                return new ResponseEntity("Suscriptor agregado", HttpStatus.OK);
-            }
-            return new ResponseEntity("No se ha encontrado el contenido asociado al id ingresado", HttpStatus.BAD_REQUEST);
-
-        } catch (Exception e) {
-            return new ResponseEntity("Ha ocurrido un error al intentar agregar el suscriptor", HttpStatus.BAD_REQUEST);
+        User user = (User) request.getSession().getAttribute("user");
+        String platform = user.getPlatform();
+        Optional<Content> optionalContent = contentService.findById(contentId);
+        if (optionalContent.isPresent() && !optionalContent.get().getSubscribers().contains(platform)) {
+            Content content = optionalContent.get();
+            content.addSubscriber(platform);
+            contentService.save(content);
+            return new ResponseEntity("Suscriptor agregado", HttpStatus.OK);
         }
+        return new ResponseEntity("Ha ocurrido un error al intentar suscribir la plataforma al contenido seleccionado," +
+                                        "verifique los datos ingresados", HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping(value = "/getNotifications")
-    public ResponseEntity<List<SubscriberLog>> getNotifications(HttpServletRequest request) {
-        try {
-            User user = (User) request.getSession().getAttribute("user");
-            String platform = user.getPlatform();
-            List<SubscriberLog> subscriberLog = subscriberLogService.findByPlatform(platform);
-            return new ResponseEntity(subscriberLog, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity("Ha ocurrido un error al intentar obtener las notificaciones", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<List<SubscriberLog>> getNotifications() {
+        User user = (User) request.getSession().getAttribute("user");
+        String platform = user.getPlatform();
+        List<SubscriberLog> subscriberLog = subscriberLogService.findByPlatform(platform);
+        return new ResponseEntity(subscriberLog, HttpStatus.OK);
     }
 
 
@@ -123,16 +112,6 @@ public class UserController {
                         secretKey.getBytes()).compact();
 
         return "Bearer " + token;
-    }
-
-    private User getUserfromDTO(UserDTO userDTO){
-        User user = new User();
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
-        user.setName(userDTO.getName());
-        user.setLastName(userDTO.getLastName());
-        user.setPlatform(userDTO.getPlatform());
-        return user;
     }
 }
 

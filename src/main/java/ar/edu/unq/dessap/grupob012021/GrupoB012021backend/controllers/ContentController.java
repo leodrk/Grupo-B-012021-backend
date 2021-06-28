@@ -29,7 +29,7 @@ public class ContentController {
     @GetMapping(value = "getInfo/{contentId}")
     public ResponseEntity<ContentDTO> getContentInfo (@PathVariable(value = "contentId") int contentId){
         try {
-            ContentDTO contentDTO = contentService.getContentInfo(contentId);
+            var contentDTO = contentService.getContentInfo(contentId);
             return new ResponseEntity<>(contentDTO,HttpStatus.OK);
         }
         catch (Exception e){

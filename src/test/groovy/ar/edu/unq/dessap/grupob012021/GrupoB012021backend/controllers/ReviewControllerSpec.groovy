@@ -3,6 +3,7 @@ package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.controllers
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.Content
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewCriteriaDTO
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewDTO
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.User
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ContentService
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ReviewService
@@ -28,23 +29,26 @@ class ReviewControllerSpec extends Specification{
                                                              contentService: contentService)
 
 
-    def "when saveReview is called properly it must return a responseentity with the status ok"(){
+    def "when saveReview is called properly it must return a responseentity"(){
         given:
-        def review = new Review()
-        def responseEntity = new ResponseEntity(null, HttpStatus.OK)
+        def review = new ReviewDTO()
         def session = Mock(HttpSession)
-        def content = new Content()
         request.getSession() >> session
         session.getAttribute(_) >> new User()
-        contentService.findById(_) >> Optional.of(content)
+        contentService.findById(_) >> optional
 
 
         when:
         def result = reviewController.saveReview(review, 1)
 
-        then:ReviewControllerSpec
-        1 * reviewService.save(review)
+        then:
+        calls * reviewService.save(_)
         result == responseEntity
+
+        where:
+        calls | optional                        | responseEntity
+        1     | Optional.of(new Content())      | new ResponseEntity("Review guardado satisfactoriamente", HttpStatus.OK)
+        0     | Optional.empty()                | new ResponseEntity("El contenido no existe", HttpStatus.BAD_REQUEST)
     }
 
     def "when likeReview is called for an existing review it must call reviewService.likeReview and return a responseEntity.OK"(){

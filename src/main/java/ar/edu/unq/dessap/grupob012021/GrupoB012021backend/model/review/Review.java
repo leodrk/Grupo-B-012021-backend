@@ -22,7 +22,7 @@ public class Review {
     private Date date;
     private String origin;
     private String platform;
-    private String nick;
+    private String userName;
     private String language;
     private String country;
     private String city;
@@ -66,9 +66,9 @@ public class Review {
 
     public void setPlatform(String platform) { this.platform = platform; }
 
-    public String getNick() { return nick; }
+    public String getUserName() { return userName; }
 
-    public void setNick(String nick) { this.nick = nick; }
+    public void setUserName(String userName) { this.userName = userName; }
 
     public String getLanguage() { return language; }
 

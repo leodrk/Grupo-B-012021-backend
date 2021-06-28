@@ -35,8 +35,8 @@ public class ContentServiceImpl implements ContentService {
     public ContentDTO getContentInfo(int contentId) throws NoSuchElementException{
         Optional<Content> optionalContent = contentRepository.findById(contentId);
         if (optionalContent.isPresent()){
-            Content content = optionalContent.get();
-            ContentDTO contentDTO = new ContentDTO(content);
+            var content = optionalContent.get();
+            var contentDTO = new ContentDTO(content);
             contentDTO.setReviewCount(content.getReviews().size());
             contentDTO.setAverageRating(getAverageRating(content.getReviews()));
             return contentDTO;
