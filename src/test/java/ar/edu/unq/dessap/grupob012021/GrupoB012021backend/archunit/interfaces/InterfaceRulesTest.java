@@ -5,7 +5,8 @@ import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.Test;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
-
+//https://www.archunit.org/use-cases
+//https://github.com/TNG/ArchUnit-Examples/tree/main/example-plain/src/test/java/com/tngtech/archunit/exampletest
 public class InterfaceRulesTest {
     private final JavaClasses classes = new ClassFileImporter().importPackages("ar.edu.unq.dessap.grupob012021.GrupoB012021backend");
 
