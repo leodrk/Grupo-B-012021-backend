@@ -7,14 +7,13 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaMember;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.Test;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static com.tngtech.archunit.core.domain.JavaMember.Predicates.declaredIn;
-import static com.tngtech.archunit.core.domain.properties.CanBeAnnotated.Predicates.annotatedWith;
 import static com.tngtech.archunit.lang.conditions.ArchPredicates.are;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
-import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
 
+@SpringBootTest
 public class ControllerRulesTest {
     private final JavaClasses classes = new ClassFileImporter().importPackages("ar.edu.unq.dessap.grupob012021.GrupoB012021backend");
 

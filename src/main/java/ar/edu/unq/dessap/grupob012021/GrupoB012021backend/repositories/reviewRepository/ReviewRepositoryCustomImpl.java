@@ -1,7 +1,7 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.reviewRepository;
 
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewCriteriaDTO;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

@@ -2,14 +2,11 @@ package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.controllers
 
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.SubscriberLog
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.Content
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.ContentDTO
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewCriteriaDTO
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.User
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.UserDTO
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ContentService
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.SubscriberLogService
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.UserService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -17,7 +14,6 @@ import spock.lang.Specification
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpSession
-import java.nio.file.attribute.UserDefinedFileAttributeView
 
 @SpringBootTest(classes = UserControllerSpec.class)
 class UserControllerSpec extends Specification{
