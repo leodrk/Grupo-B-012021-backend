@@ -5,7 +5,6 @@ import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity

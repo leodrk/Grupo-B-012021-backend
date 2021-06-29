@@ -1,8 +1,8 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service;
 
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.UserRepository;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.User;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.UserDTO;
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

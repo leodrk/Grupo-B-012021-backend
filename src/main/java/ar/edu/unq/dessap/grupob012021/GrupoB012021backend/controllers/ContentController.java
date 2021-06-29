@@ -1,8 +1,8 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.controllers;
 
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewCriteriaDTO;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.Content;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.ContentDTO;
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewCriteriaDTO;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,7 +26,7 @@ public class ContentController {
         return new ResponseEntity(contentService.findByReviews(reviewCriteriaDTO), HttpStatus.OK);
     }
 
-    @GetMapping(value = "getInfo/{contentId}")
+    @GetMapping(value = "content/getInfo/{contentId}")
     public ResponseEntity<ContentDTO> getContentInfo (@PathVariable(value = "contentId") int contentId){
         try {
             var contentDTO = contentService.getContentInfo(contentId);

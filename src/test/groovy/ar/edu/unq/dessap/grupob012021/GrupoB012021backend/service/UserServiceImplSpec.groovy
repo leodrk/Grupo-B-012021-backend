@@ -1,11 +1,6 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service
 
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.report.Reason
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.report.Report
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.User
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.UserDTO
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.ReportRepository
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.UserRepository
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification

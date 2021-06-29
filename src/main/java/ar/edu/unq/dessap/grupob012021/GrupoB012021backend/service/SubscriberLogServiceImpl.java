@@ -1,13 +1,12 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service;
 
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.SubscriberLogRepository;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.SubscriberLog;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.SubscriberLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
