@@ -59,7 +59,12 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>5.5.0.Final</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.tngtech.archunit</groupId>
+			<artifactId>archunit</artifactId>
+			<version>0.11.0</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>

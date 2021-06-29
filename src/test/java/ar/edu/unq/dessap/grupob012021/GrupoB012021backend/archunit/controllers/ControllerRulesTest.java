@@ -18,14 +18,20 @@ import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.sli
 public class ControllerRulesTest {
     private final JavaClasses classes = new ClassFileImporter().importPackages("ar.edu.unq.dessap.grupob012021.GrupoB012021backend");
 
-    @Test
-    public void controllers_should_only_call_secured_methods() {
+//    @Test
+//    public void controllers_should_only_call_secured_methods() {
 //        classes()
 //                .that().haveNameMatching(".*Controller")
 //                .should().onlyCallMethodsThat(areDeclaredInController())
 //                .check(classes);
+//    }
+    @Test
+    public void controllers_should_have_their_own_package() {
+        classes()
+                .that().haveNameMatching(".*Controller")
+                .should().resideInAPackage("..controllers..")
+                .check(classes);
     }
-
     private DescribedPredicate<JavaMember> areDeclaredInController() {
         DescribedPredicate<JavaClass> aPackageController = GET_PACKAGE_NAME.is(PackageMatchers.of("..controller..", "java.."))
                 .as("a package '..controller..'");
