@@ -1,4 +1,4 @@
-package ar.edu.unq.dessap.grupob012021.GrupoB012021backend;
+package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.configs;
 
 import java.io.IOException;
 import java.util.List;
