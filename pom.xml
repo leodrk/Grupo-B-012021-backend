@@ -133,6 +133,14 @@
 			<artifactId>junit-vintage-engine</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -185,6 +193,7 @@
 						<exclude>ar/edu/unq/dessap/grupob012021/GrupoB012021backend/repositories/**/*</exclude>
 						<exclude>**/ServletInitializer.*</exclude>
 						<exclude>**/WebSecurityConfig.*</exclude>
+						<exclude>**/AspectRequestLogger.*</exclude>
 						<exclude>**/GrupoB012021BackendApplication.*</exclude>
 					</excludes>
 					<destFile>${sonar.jacoco.reportPath}</destFile>
