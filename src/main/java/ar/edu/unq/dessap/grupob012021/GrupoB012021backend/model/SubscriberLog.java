@@ -2,10 +2,7 @@ package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model;
 
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -17,13 +14,13 @@ public class SubscriberLog {
     private int id;
     @ManyToOne
     private Review review;
-    private String platform;
-    private Date date;
+    @ManyToOne
+    @JoinColumn(name = "platform_id")
+    private Platform platform;
 
-    public SubscriberLog (Review review, String platform){
+    public SubscriberLog (Review review, Platform platform){
         this.review = review;
         this.platform = platform;
-        this.date = new Date();
     }
 
     public SubscriberLog (){}
@@ -36,11 +33,7 @@ public class SubscriberLog {
 
     public void setReview(Review review) { this.review = review; }
 
-    public String getPlatform() { return platform; }
+    public Platform getPlatform() { return platform; }
 
-    public void setPlatform(String platform) { this.platform = platform; }
-
-    public Date getDate() { return date; }
-
-    public void setDate(Date date) { this.date = date; }
+    public void setPlatform(Platform platform) { this.platform = platform; }
 }

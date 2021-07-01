@@ -5,11 +5,12 @@ import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.report.Report;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity(name ="Review")
-public class Review {
+public class Review implements Serializable {
 
     @Id
     @GeneratedValue

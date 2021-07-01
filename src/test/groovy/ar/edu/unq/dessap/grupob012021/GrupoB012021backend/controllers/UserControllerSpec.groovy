@@ -1,9 +1,10 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.controllers
 
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.SubscriberLog
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Platform
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.Content
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.User
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.UserDTO
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.PlatformRepository
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ContentService
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.SubscriberLogService
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.UserService
@@ -22,16 +23,19 @@ class UserControllerSpec extends Specification{
     ContentService contentService = Mock(ContentService)
     SubscriberLogService subscriberLogService = Mock(SubscriberLogService)
     HttpServletRequest request = Mock(HttpServletRequest)
+    PlatformRepository platformRepository = Mock(PlatformRepository)
     UserController userController = new UserController( userService: userService,
                                                         contentService: contentService,
                                                         subscriberLogService: subscriberLogService,
-                                                        request: request)
+                                                        request: request,
+                                                        platformRepository: platformRepository)
 
     def "when register is called properly, it should return a responseEntity"(){
         given:
         def userDTO = new UserDTO()
         userDTO.setUsername("test")
         userDTO.setPassword("testPassword")
+        userService.findByUsernameAndPassword(_,_) >> Optional.empty()
 
         when:
         def result = userController.register(userDTO)
@@ -43,6 +47,18 @@ class UserControllerSpec extends Specification{
     def "when reguster is called with bad parameters, it should return a responseEntity with the error info"(){
         given:
         def userDTO = new UserDTO()
+
+        when:
+        def result = userController.register(userDTO)
+
+        then:
+        result == new ResponseEntity("ocurrio un error en la creacion del usuario", HttpStatus.BAD_REQUEST)
+    }
+
+    def "when reguster is called with an existint user, it should return a responseEntity with the error info"(){
+        given:
+        def userDTO = new UserDTO()
+        userService.findByUsernameAndPassword(_,_) >> Optional.of(new User())
 
         when:
         def result = userController.register(userDTO)
@@ -141,37 +157,41 @@ class UserControllerSpec extends Specification{
         result == responseEntity
     }
 
-    def "when getNotifications is called properly, it should return a list of subscriberLog"(){
+    def "when setNotificationEndpoint is called properly, it should return a responseEntity.OK"() {
         given:
         def session = Mock(HttpSession)
         request.getSession() >> session
         def user = new User()
         user.setPlatform("Netflix")
-        session.getAttribute("user") >> user
-        subscriberLogService.findByPlatform("Netflix") >> []
-        def responseEntity = new ResponseEntity([], HttpStatus.OK)
+        session.getAttribute(_) >> user
+        def endpoint = "www.google.com"
+        def platform = new Platform(user.getPlatform(), endpoint)
+        def responseEntity = new ResponseEntity(platform, HttpStatus.OK)
 
         when:
-        def result = userController.getNotifications()
+        userController.setNotificationEndpoint(endpoint)
 
         then:
-        result == responseEntity
+        platform.class == responseEntity.getBody().class
+        1 * platformRepository.save(_)
     }
 
-    def "when getNotifications is called with, it should return a list of subscriberLog"(){
+    def "when setNotificationEndpoint is called not properly, it should return a responseEntity.BAD_REQUEST"() {
         given:
         def session = Mock(HttpSession)
         request.getSession() >> session
         def user = new User()
         user.setPlatform("Netflix")
-        session.getAttribute("user") >> user
-        subscriberLogService.findByPlatform("Netflix") >> []
-        def responseEntity = new ResponseEntity([], HttpStatus.OK)
+        session.getAttribute(_) >> user
+        def endpoint = "www.google.com"
+        def responseEntity = new ResponseEntity("Ha ocurrido un error al intentar guardar el endpoint", HttpStatus.BAD_REQUEST)
 
         when:
-        def result = userController.getNotifications()
+        def result = userController.setNotificationEndpoint(endpoint)
 
         then:
         result == responseEntity
+        1 * platformRepository.save(_) >> {throw new ConnectException()}
     }
+
 }

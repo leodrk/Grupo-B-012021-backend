@@ -1,5 +1,6 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

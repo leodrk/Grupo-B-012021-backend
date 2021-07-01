@@ -10,6 +10,7 @@ import java.util.List;
 @Entity
 public class Content {
 
+
     @Id
     @GeneratedValue
     private int id;

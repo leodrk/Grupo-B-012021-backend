@@ -21,12 +21,12 @@ public class ContentController {
     @Autowired
     private ContentService contentService;
 
-    @PostMapping(value = "content/findByCriteria")
+    @PostMapping(value = "api/content/findByCriteria")
     public ResponseEntity<List<Content>> findContentByReviews(@RequestBody ReviewCriteriaDTO reviewCriteriaDTO){
         return new ResponseEntity(contentService.findByReviews(reviewCriteriaDTO), HttpStatus.OK);
     }
 
-    @GetMapping(value = "content/getInfo/{contentId}")
+    @GetMapping(value = "api/content/getInfo/{contentId}")
     public ResponseEntity<ContentDTO> getContentInfo (@PathVariable(value = "contentId") int contentId){
         try {
             var contentDTO = contentService.getContentInfo(contentId);
