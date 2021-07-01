@@ -1,6 +1,5 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review;
 
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.Content;
 
 public class ReviewDTO {
 
@@ -15,8 +14,6 @@ public class ReviewDTO {
     private String country;
     private String city;
     private int rating;
-
-    private Content content;
 
     public String getType() { return type; }
 
@@ -53,10 +50,6 @@ public class ReviewDTO {
     public int getRating() { return rating; }
 
     public void setRating(int rating) { this.rating = rating; }
-
-    public Content getContent() { return content; }
-
-    public void setContent(Content content) { this.content = content; }
 
     public String getUserName() { return userName; }
 

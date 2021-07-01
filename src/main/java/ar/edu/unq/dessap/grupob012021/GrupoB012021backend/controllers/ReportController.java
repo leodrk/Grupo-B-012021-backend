@@ -16,7 +16,7 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
-    @PostMapping(value = "/report/{review}/{reason}")
+    @PostMapping(value = "api/report/{review}/{reason}")
     public ResponseEntity reportReview(@PathVariable(value="review") int review, @PathVariable(value="reason") int reason){
         try {
             reportService.reportReview(review, reason);

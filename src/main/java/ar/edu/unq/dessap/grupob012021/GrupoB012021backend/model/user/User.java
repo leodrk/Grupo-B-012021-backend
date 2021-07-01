@@ -17,8 +17,6 @@ public class User implements Serializable {
     private String password;
     private String platform;
     private String token;
-    @Enumerated(EnumType.STRING)
-    private Role role;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id")
     private Collection<Review> reviews;
@@ -71,10 +69,6 @@ public class User implements Serializable {
     public String getToken() { return token; }
 
     public void setToken(String token) { this.token = token; }
-
-    public Role getRole() { return role; }
-
-    public void setRole(Role role) { this.role = role; }
 
 }
 

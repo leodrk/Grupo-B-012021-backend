@@ -1,9 +1,10 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.controllers;
 
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.Platform;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.Content;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.PlatformRepository;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ContentService;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.UserService;
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.SubscriberLog;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.User;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.UserDTO;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.SubscriberLogService;
@@ -12,6 +13,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
+@Scope("session")
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class UserController {
 
@@ -38,6 +41,8 @@ public class UserController {
     @Autowired
     private SubscriberLogService subscriberLogService;
     @Autowired
+    private PlatformRepository platformRepository;
+    @Autowired
     private HttpServletRequest request;
 
     @PostMapping(value = "/register")
@@ -46,6 +51,10 @@ public class UserController {
             userDTO.setPassword(Hashing.sha256()
                             .hashString(userDTO.getPassword(), StandardCharsets.UTF_8)
                             .toString());
+            Optional<User> currentUser = userService.findByUsernameAndPassword(userDTO.getUsername(), userDTO.getPassword());
+            if (currentUser.isPresent()){
+                throw new IllegalAccessException();
+            }
             userService.save(userDTO);
         }
         catch (Exception e){
@@ -69,7 +78,7 @@ public class UserController {
         return new ResponseEntity("ocurrio un error en el login", HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(value = "/subscribe/{contentId}")
+    @PostMapping(value = "api/user/subscribe/{contentId}")
     public ResponseEntity subscribeToContent (@PathVariable(value="contentId") int contentId){
         User user = (User) request.getSession().getAttribute("user");
         String platform = user.getPlatform();
@@ -84,12 +93,18 @@ public class UserController {
                                         "verifique los datos ingresados", HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping(value = "/getNotifications")
-    public ResponseEntity<List<SubscriberLog>> getNotifications() {
-        User user = (User) request.getSession().getAttribute("user");
-        String platform = user.getPlatform();
-        List<SubscriberLog> subscriberLog = subscriberLogService.findByPlatform(platform);
-        return new ResponseEntity(subscriberLog, HttpStatus.OK);
+    @PostMapping(value = "api/user/setNotificationEndpoint/{endpoint}")
+    public ResponseEntity setNotificationEndpoint (@PathVariable(value="endpoint") String endpoint){
+        try {
+            User user = (User) request.getSession().getAttribute("user");
+            String platform = user.getPlatform();
+            Platform newPlatform = new Platform(platform, endpoint);
+            platformRepository.save(newPlatform);
+            return new ResponseEntity(newPlatform, HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity("Ha ocurrido un error al intentar guardar el endpoint", HttpStatus.BAD_REQUEST);
+        }
     }
 
 

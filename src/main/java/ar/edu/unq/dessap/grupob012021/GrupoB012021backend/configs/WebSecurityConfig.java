@@ -11,10 +11,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.Arrays;
 
@@ -29,6 +25,11 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/review/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/review/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/report/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/content/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/content/**").permitAll()
                 .anyRequest().authenticated();
         http.cors().configurationSource(corsConfigurationSource());
     }
@@ -57,16 +58,5 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-    }
-
-////////////////Swagger Config////////////////
-
-    @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
-                .build();
     }
 }

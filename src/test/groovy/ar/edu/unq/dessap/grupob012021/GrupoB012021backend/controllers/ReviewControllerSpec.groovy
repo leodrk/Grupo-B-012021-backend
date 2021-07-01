@@ -32,6 +32,7 @@ class ReviewControllerSpec extends Specification{
     def "when saveReview is called properly it must return a responseentity"(){
         given:
         def review = new ReviewDTO()
+        review.setPlatform("Netflix")
         def session = Mock(HttpSession)
         request.getSession() >> session
         session.getAttribute(_) >> new User()
@@ -44,11 +45,13 @@ class ReviewControllerSpec extends Specification{
         then:
         calls * reviewService.save(_)
         result == responseEntity
+        subscriberscalls * subscriberLogService.registerLog(_)
 
         where:
-        calls | optional                        | responseEntity
-        1     | Optional.of(new Content())      | new ResponseEntity("Review guardado satisfactoriamente", HttpStatus.OK)
-        0     | Optional.empty()                | new ResponseEntity("El contenido no existe", HttpStatus.BAD_REQUEST)
+        calls | optional                                                | responseEntity                                                          | subscriberscalls
+        1     | Optional.of(new Content(subscribers: ["Netflix"]))      | new ResponseEntity("Review guardado satisfactoriamente", HttpStatus.OK) | 1
+        0     | Optional.empty()                                        | new ResponseEntity("El contenido no existe", HttpStatus.BAD_REQUEST)    | 0
+        1     | Optional.of(new Content(subscribers: []))               | new ResponseEntity("Review guardado satisfactoriamente", HttpStatus.OK) | 0
     }
 
     def "when likeReview is called for an existing review it must call reviewService.likeReview and return a responseEntity.OK"(){

@@ -7,7 +7,6 @@ public class UserDTO {
     private String username;
     private String password;
     private String platform;
-    private Role role;
 
     public UserDTO() {
     }
@@ -41,9 +40,5 @@ public class UserDTO {
     public String getPassword() { return password; }
 
     public void setPassword(String password) { this.password = password; }
-
-    public Role getRole() { return role; }
-
-    public void setRole(Role role) { this.role = role; }
 }
 

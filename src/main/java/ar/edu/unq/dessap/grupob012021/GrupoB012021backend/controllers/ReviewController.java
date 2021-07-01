@@ -5,7 +5,6 @@ import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ContentService
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.Content;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewDTO;
-import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.User;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ReviewService;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.SubscriberLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +36,8 @@ public class ReviewController {
     @Autowired
     private HttpServletRequest request;
 
-    @PostMapping(value="review/saveReview/{contentId}")
+    @PostMapping(value="api/review/saveReview/{contentId}")
     public ResponseEntity saveReview(@RequestBody ReviewDTO reviewDTO, @PathVariable(value="contentId") int contentId) {
-        var user = (User) request.getSession().getAttribute("user");
-        String platform = user.getPlatform();
         Content content;
         Optional<Content> optionalContent = contentService.findById(contentId);
         if(optionalContent.isPresent()) {
@@ -49,16 +46,16 @@ public class ReviewController {
         else {
             return new ResponseEntity("El contenido no existe", HttpStatus.BAD_REQUEST);
         }
-        reviewDTO.setContent(content);
-        reviewDTO.setUserName(user.getName()+ " " + user.getLastName());
-        reviewDTO.setPlatform(user.getPlatform());
         Review review = getReviewFromDTO(reviewDTO);
+        review.setContent(content);
         reviewService.save(review);
-        subscriberLogService.notifySubscribers(review, platform);
+        if(content.getSubscribers().contains(review.getPlatform())) {
+            subscriberLogService.registerLog(review);
+        }
         return new ResponseEntity("Review guardado satisfactoriamente", HttpStatus.OK);
     }
 
-    @PostMapping(value = "review/like/{review}")
+    @PostMapping(value = "api/review/like/{review}")
     public ResponseEntity likeReview(@PathVariable(value="review") int review){
         try {
             reviewService.likeReview(review);
@@ -69,7 +66,7 @@ public class ReviewController {
         return new ResponseEntity(null, HttpStatus.OK);
     }
 
-    @PostMapping(value = "review/dislike/{review}")
+    @PostMapping(value = "api/review/dislike/{review}")
     public ResponseEntity dislikeReview(@PathVariable(value="review") int review){
         try {
             reviewService.dislikeReview(review);
@@ -80,7 +77,7 @@ public class ReviewController {
         return new ResponseEntity(null, HttpStatus.OK);
     }
 
-    @GetMapping(value = "review/findbycontent/{content}")
+    @GetMapping(value = "api/review/findbycontent/{content}")
     public ResponseEntity<List<Review>> getReviewByContent(@PathVariable(value="content") int contentId){
             ArrayList<Review> reviewList = (ArrayList) reviewService.findByContentId(contentId);
             if (!reviewList.isEmpty()){
@@ -89,7 +86,7 @@ public class ReviewController {
             return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping(value = "review/findByCriteria/{pageNumber}")
+    @GetMapping(value = "api/review/findByCriteria/{pageNumber}")
     public ResponseEntity<List<Review>> getReviewByCriteria(@PathVariable(value="pageNumber") int pageNumber,
                                                            @RequestBody ReviewCriteriaDTO reviewCriteria){
             return new ResponseEntity<>(this.reviewService.findByCriteria(reviewCriteria, pageNumber), HttpStatus.OK);
