@@ -17,4 +17,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewRep
 
     @Query("SELECT r FROM Review r WHERE r.content.id = ?1")
     List<Review> findByContentId(int contentId);
+
+    List<Review> findAllByPlatform(String platform);
 }

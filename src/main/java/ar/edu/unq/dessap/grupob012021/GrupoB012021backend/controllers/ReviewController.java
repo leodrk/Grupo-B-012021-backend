@@ -1,6 +1,7 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.controllers;
 
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewCriteriaDTO;
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewsByMonthDTO;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ContentService;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.content.Content;
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
@@ -15,10 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
@@ -92,6 +90,17 @@ public class ReviewController {
             return new ResponseEntity<>(this.reviewService.findByCriteria(reviewCriteria, pageNumber), HttpStatus.OK);
     }
 
+    @GetMapping(value = "api/review/getReviewsByMonth/{platform}")
+    public ResponseEntity<ReviewsByMonthDTO> getReviewsByMonth (@PathVariable(value = "platform") String platform){
+        try {
+            ReviewsByMonthDTO reviewsByMonthDTOS = reviewService.getReviewsByMonth(platform);
+            return new ResponseEntity(reviewsByMonthDTOS, HttpStatus.OK);
+        }
+        catch (NoSuchElementException e){
+            return new ResponseEntity("No se encontraron reviews para la plataforma seleccionada", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     private Review getReviewFromDTO(ReviewDTO reviewDTO){
         Review review = new Review();
         review.setType(reviewDTO.getType());
@@ -105,6 +114,7 @@ public class ReviewController {
         review.setRating(reviewDTO.getRating());
         review.setPlatform(reviewDTO.getPlatform());
         review.setUserName(reviewDTO.getUserName());
+        review.setDate(new Date());
         return review;
     }
 }

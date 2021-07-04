@@ -1,6 +1,7 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.controllers
 
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewsByMonthDTO
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.User
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ContentService
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ReviewService
@@ -152,5 +153,34 @@ class ReviewControllerSpec extends Specification{
         then:
         1 * this.reviewService.findByCriteria(reviewCriteria, pageNumber) >> reviewList
         result == responseEntity
+    }
+
+    def "when getReviewsByMonth is called with a platform that has existing reviews, it should return a reviewsByMonthDTO"(){
+        given:
+        def reviewsByMonthDTOS = new ReviewsByMonthDTO();
+        def platform = "Netflix"
+        def responseEntity = new ResponseEntity(reviewsByMonthDTOS, HttpStatus.OK)
+
+
+        when:
+        def result = reviewController.getReviewsByMonth(platform)
+
+        then:
+        result == responseEntity
+        1 * reviewService.getReviewsByMonth(platform) >> reviewsByMonthDTOS
+    }
+
+    def "when getReviewsByMonth is called with a platform that has not existing reviews, it should return a responseEntity with BAD_REQUEST status"(){
+        given:
+        def platform = "Netflix"
+        def responseEntity = new ResponseEntity("No se encontraron reviews para la plataforma seleccionada", HttpStatus.BAD_REQUEST)
+
+
+        when:
+        def result = reviewController.getReviewsByMonth(platform)
+
+        then:
+        result == responseEntity
+        1 * reviewService.getReviewsByMonth(platform) >> {throw new NoSuchElementException() }
     }
 }

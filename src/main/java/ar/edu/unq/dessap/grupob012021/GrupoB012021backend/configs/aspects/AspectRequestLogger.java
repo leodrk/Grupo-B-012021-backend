@@ -1,4 +1,4 @@
-package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.configs;
+package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.configs.aspects;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.*;
@@ -20,7 +20,7 @@ public class AspectRequestLogger {
     @Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping) || " +
               "@annotation(org.springframework.web.bind.annotation.PostMapping)")
     public void endpointMapping() {
-
+        //metodo utilizado para que lo "atrapen" el metodo before y after
     }
 
     @Before("endpointMapping()")

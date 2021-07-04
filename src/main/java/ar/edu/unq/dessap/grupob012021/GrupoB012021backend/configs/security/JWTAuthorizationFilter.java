@@ -1,4 +1,4 @@
-package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.configs;
+package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.configs.security;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,14 +22,14 @@ import io.jsonwebtoken.UnsupportedJwtException;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
-    private final String HEADER = "Authorization";
-    private final String PREFIX = "Bearer ";
-    private final String SECRET = "grupob012021BackendDappSecretKey";
+    private final static String HEADER = "Authorization";
+    private final static String PREFIX = "Bearer ";
+    private final static String SECRET = "grupob012021BackendDappSecretKey";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         try {
-            if (existeJWTToken(request, response)) {
+            if (existeJWTToken(request)) {
                 Claims claims = validateToken(request);
                 if (claims.get("authorities") != null) {
                     setUpSpringAuthentication(claims);
@@ -62,11 +62,9 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
     }
 
-    private boolean existeJWTToken(HttpServletRequest request, HttpServletResponse res) {
+    private boolean existeJWTToken(HttpServletRequest request) {
         String authenticationHeader = request.getHeader(HEADER);
-        if (authenticationHeader == null || !authenticationHeader.startsWith(PREFIX))
-            return false;
-        return true;
+        return (!(authenticationHeader == null || !authenticationHeader.startsWith(PREFIX)));
     }
 
 }

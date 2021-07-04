@@ -1,4 +1,4 @@
-package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.configs;
+package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.configs.jobs;
 
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.SubscriberLogService;
 import lombok.extern.slf4j.Slf4j;

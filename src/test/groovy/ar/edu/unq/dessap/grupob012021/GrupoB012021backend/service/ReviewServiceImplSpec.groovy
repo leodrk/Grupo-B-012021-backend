@@ -2,6 +2,7 @@ package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service
 
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewCriteriaDTO
+import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.ReviewsByMonthDTO
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.reviewRepository.ReviewRepository
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
@@ -120,5 +121,38 @@ class ReviewServiceImplSpec extends Specification{
 
         then:
         1 * reviewRepository.findByCriteria(criteria,1)
+    }
+
+    def "when getReviewsByMonth is called with a platform that has no reviews, it must throw NoSuchElementException"(){
+        given:
+        def platform = "Netflix"
+        reviewRepository.findAllByPlatform(platform) >> []
+
+        when:
+        reviewServiceImpl.getReviewsByMonth(platform)
+
+        then:
+        thrown NoSuchElementException
+    }
+
+    def "when getReviewsByMonth is called with a platform that has reviews, it should return a reviewsbymonthDTO"(){
+        given:
+        def platform = "Netflix"
+        def date1 = new GregorianCalendar(2021,10,1).getTime()
+        def date2 = new GregorianCalendar(2021,11,1).getTime()
+        def stringDate1 = "November - 2021"
+        def stringDate2 = "December - 2021"
+        def review1 = new Review(platform: platform, date: date1)
+        def review2 = new Review(platform: platform, date: date2)
+        def review3 = new Review(platform: platform, date: date2)
+        reviewRepository.findAllByPlatform(platform) >> [review1, review2, review3]
+        def reviewsByMonthDTO = new ReviewsByMonthDTO(months: [stringDate1, stringDate2], reviewAmount: [1,2])
+
+        when:
+        def result = reviewServiceImpl.getReviewsByMonth(platform)
+
+        then:
+        result.getMonths() == reviewsByMonthDTO.getMonths()
+        result.getReviewAmount() == reviewsByMonthDTO.getReviewAmount()
     }
 }
