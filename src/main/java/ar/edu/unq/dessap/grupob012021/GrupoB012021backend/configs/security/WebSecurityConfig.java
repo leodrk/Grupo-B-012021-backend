@@ -1,4 +1,4 @@
-package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.configs;
+package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.configs.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.configs;
+package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.configs.security;
 
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.GrupoB012021BackendApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
