@@ -27,7 +27,15 @@ public class SwaggerConfiguration {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String DEFAULT_INCLUDE_PATTERN = "(?!/error).+";
-    public static final String NOT_SECURED_PATTERS = "(?!/register|/login|/review|/report|/content).+";
+    public static final String NOT_SECURED_PATTERS = "(?!/register|" +
+                                                        "/login|" +
+                                                        "^/api/review/save|" +
+                                                        "^/api/review/like|" +
+                                                        "^/api/review/dislike|" +
+                                                        "^/api/review/findByContent|" +
+                                                        "^/api/review/findByCriteria|" +
+                                                        "^/api/report|" +
+                                                        "^/api/content).+";
 
     private final Logger log = LoggerFactory.getLogger(SwaggerConfiguration.class);
 

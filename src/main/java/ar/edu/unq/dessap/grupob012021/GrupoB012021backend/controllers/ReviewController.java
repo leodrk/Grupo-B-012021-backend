@@ -75,7 +75,7 @@ public class ReviewController {
         return new ResponseEntity(null, HttpStatus.OK);
     }
 
-    @GetMapping(value = "api/review/findbycontent/{content}")
+    @GetMapping(value = "api/review/findByContent/{content}")
     public ResponseEntity<List<Review>> getReviewByContent(@PathVariable(value="content") int contentId){
             ArrayList<Review> reviewList = (ArrayList) reviewService.findByContentId(contentId);
             if (!reviewList.isEmpty()){
@@ -84,7 +84,7 @@ public class ReviewController {
             return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping(value = "api/review/findByCriteria/{pageNumber}")
+    @PostMapping(value = "api/review/findByCriteria/{pageNumber}")
     public ResponseEntity<List<Review>> getReviewByCriteria(@PathVariable(value="pageNumber") int pageNumber,
                                                            @RequestBody ReviewCriteriaDTO reviewCriteria){
             return new ResponseEntity<>(this.reviewService.findByCriteria(reviewCriteria, pageNumber), HttpStatus.OK);

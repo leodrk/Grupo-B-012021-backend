@@ -8,6 +8,8 @@ import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.repositories.PlatformR
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.ContentService
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.SubscriberLogService
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.service.UserService
+import com.google.common.hash.Hashing
+import org.json.JSONObject
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,6 +17,7 @@ import spock.lang.Specification
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpSession
+import java.nio.charset.StandardCharsets
 
 @SpringBootTest(classes = UserControllerSpec.class)
 class UserControllerSpec extends Specification{
@@ -35,30 +38,24 @@ class UserControllerSpec extends Specification{
         def userDTO = new UserDTO()
         userDTO.setUsername("test")
         userDTO.setPassword("testPassword")
-        userService.findByUsernameAndPassword(_,_) >> Optional.empty()
+        def password = Hashing.sha256()
+                .hashString(userDTO.getPassword(), StandardCharsets.UTF_8)
+                .toString()
 
         when:
         def result = userController.register(userDTO)
 
         then:
         result == new ResponseEntity("usuario creado satisfactoriamente", HttpStatus.OK)
+        1 * userService.save(userDTO);
+        1 * userService.findByUsernameAndPassword(userDTO.getUsername(),password) >> {throw new NoSuchElementException()}
     }
 
-    def "when reguster is called with bad parameters, it should return a responseEntity with the error info"(){
+    def "when register is called with an existint user, it should return a responseEntity with the error info"(){
         given:
         def userDTO = new UserDTO()
-
-        when:
-        def result = userController.register(userDTO)
-
-        then:
-        result == new ResponseEntity("ocurrio un error en la creacion del usuario", HttpStatus.BAD_REQUEST)
-    }
-
-    def "when reguster is called with an existint user, it should return a responseEntity with the error info"(){
-        given:
-        def userDTO = new UserDTO()
-        userService.findByUsernameAndPassword(_,_) >> Optional.of(new User())
+        userDTO.setPassword("test")
+        userService.findByUsernameAndPassword(_,_) >> new User()
 
         when:
         def result = userController.register(userDTO)
@@ -73,17 +70,25 @@ class UserControllerSpec extends Specification{
         userDTO.setUsername("test")
         userDTO.setPassword("testPassword")
         def user = new User()
-        userService.findByUsernameAndPassword(_,_) >> Optional.of(user)
-        def responseEntity = new ResponseEntity(user, HttpStatus.OK)
+        user.setPlatform("Netflix")
+        user.setUsername("test")
+        user.setPassword("testPassword")
+        def returnJson = new JSONObject()
+        returnJson.put("token",userController.getJWTToken("test"))
+        returnJson.put("platform",user.getPlatform());
+        returnJson.put("username",user.getUsername());
+        userService.findByUsernameAndPassword(_,_) >> user
+        def responseEntity = new ResponseEntity(returnJson, HttpStatus.OK)
         def session = Mock(HttpSession)
         request.getSession() >> session
-        session.getAttribute(_) >> new User()
 
         when:
         def result = userController.login(userDTO)
 
         then:
-        result == responseEntity
+        result.getBody()["platform"] == responseEntity.getBody()["platform"]
+        result.getBody()["username"] == responseEntity.getBody()["username"]
+        result.getStatusCode() == responseEntity.getStatusCode()
     }
 
     def "when login is called with bad parameters, it should return a responseEntity with the error data"(){
@@ -105,9 +110,7 @@ class UserControllerSpec extends Specification{
         given:
         def session = Mock(HttpSession)
         request.getSession() >> session
-        def user = new User()
-        user.setPlatform("Netflix")
-        session.getAttribute(_) >> user
+        session.getAttribute(_) >> "Netflix"
         def content = new Content()
         content.setSubscribers([])
         contentService.findById(_) >> Optional.of(content)
@@ -125,9 +128,7 @@ class UserControllerSpec extends Specification{
         given:
         def session = Mock(HttpSession)
         request.getSession() >> session
-        def user = new User()
-        user.setPlatform("Netflix")
-        session.getAttribute(_) >> user
+        session.getAttribute(_) >> "Netflix"
         contentService.findById(_) >> Optional.of(new Content(subscribers: ["Netflix"]))
         def responseEntity = new ResponseEntity("Ha ocurrido un error al intentar suscribir la plataforma al contenido seleccionado," +
                 "verifique los datos ingresados", HttpStatus.BAD_REQUEST)
@@ -143,9 +144,7 @@ class UserControllerSpec extends Specification{
         given:
         def session = Mock(HttpSession)
         request.getSession() >> session
-        def user = new User()
-        user.setPlatform("Netflix")
-        session.getAttribute(_) >> user
+        session.getAttribute(_) >> "Netflix"
         contentService.findById(_) >> Optional.empty()
         def responseEntity = new ResponseEntity("Ha ocurrido un error al intentar suscribir la plataforma al contenido seleccionado," +
                 "verifique los datos ingresados", HttpStatus.BAD_REQUEST)
@@ -163,7 +162,7 @@ class UserControllerSpec extends Specification{
         request.getSession() >> session
         def user = new User()
         user.setPlatform("Netflix")
-        session.getAttribute(_) >> user
+        session.getAttribute(_) >> "Netflix"
         def endpoint = "www.google.com"
         def platform = new Platform(user.getPlatform(), endpoint)
         def responseEntity = new ResponseEntity(platform, HttpStatus.OK)
@@ -180,9 +179,7 @@ class UserControllerSpec extends Specification{
         given:
         def session = Mock(HttpSession)
         request.getSession() >> session
-        def user = new User()
-        user.setPlatform("Netflix")
-        session.getAttribute(_) >> user
+        session.getAttribute(_) >> "Netflix"
         def endpoint = "www.google.com"
         def responseEntity = new ResponseEntity("Ha ocurrido un error al intentar guardar el endpoint", HttpStatus.BAD_REQUEST)
 

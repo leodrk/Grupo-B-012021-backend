@@ -11,5 +11,5 @@ public interface UserService {
 
     void save(UserDTO userDTO);
 
-    Optional<User> findByUsernameAndPassword(String username, String password);
+    User findByUsernameAndPassword(String username, String password);
 }

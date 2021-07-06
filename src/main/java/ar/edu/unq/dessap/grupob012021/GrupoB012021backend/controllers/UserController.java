@@ -23,9 +23,7 @@ import io.jsonwebtoken.Jwts;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin
@@ -51,37 +49,37 @@ public class UserController {
             userDTO.setPassword(Hashing.sha256()
                             .hashString(userDTO.getPassword(), StandardCharsets.UTF_8)
                             .toString());
-            Optional<User> currentUser = userService.findByUsernameAndPassword(userDTO.getUsername(), userDTO.getPassword());
-            if (currentUser.isPresent()){
-                throw new IllegalAccessException();
-            }
+            userService.findByUsernameAndPassword(userDTO.getUsername(), userDTO.getPassword());
+        }
+        catch (NoSuchElementException e){
             userService.save(userDTO);
+            return new ResponseEntity("usuario creado satisfactoriamente", HttpStatus.OK);
         }
-        catch (Exception e){
-            return new ResponseEntity("ocurrio un error en la creacion del usuario", HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity("usuario creado satisfactoriamente", HttpStatus.OK);
+        return new ResponseEntity("ocurrio un error en la creacion del usuario", HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<User> login(@RequestBody UserDTO userDTO) {
-        String hashedPassword = Hashing.sha256()
+    public ResponseEntity login(@RequestBody UserDTO userDTO) {
+        HashMap<String, String> returnMap = new HashMap<>();
+        try {
+            String hashedPassword = Hashing.sha256()
                 .hashString(userDTO.getPassword(), StandardCharsets.UTF_8)
                 .toString();
-        Optional<User> savedUser = userService.findByUsernameAndPassword(userDTO.getUsername(), hashedPassword);
-        if (savedUser.isPresent()) {
-            User returnUser = savedUser.get();
-            returnUser.setToken(getJWTToken(userDTO.getUsername()));
-            request.getSession().setAttribute("user", returnUser);
-            return new ResponseEntity(returnUser, HttpStatus.OK);
+            User savedUser = userService.findByUsernameAndPassword(userDTO.getUsername(), hashedPassword);
+            request.getSession().setAttribute("userPlatform", savedUser.getPlatform() );
+            returnMap.put("token",getJWTToken(savedUser.getUsername()));
+            returnMap.put("platform",savedUser.getPlatform());
+            returnMap.put("username",savedUser.getUsername());
+        } catch (Exception e) {
+            return new ResponseEntity("ocurrio un error en el login", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity("ocurrio un error en el login", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(returnMap, HttpStatus.OK);
+
     }
 
     @PostMapping(value = "api/user/subscribe/{contentId}")
     public ResponseEntity subscribeToContent (@PathVariable(value="contentId") int contentId){
-        User user = (User) request.getSession().getAttribute("user");
-        String platform = user.getPlatform();
+        String platform = (String) request.getSession().getAttribute("userPlatform");
         Optional<Content> optionalContent = contentService.findById(contentId);
         if (optionalContent.isPresent() && !optionalContent.get().getSubscribers().contains(platform)) {
             Content content = optionalContent.get();
@@ -96,8 +94,7 @@ public class UserController {
     @PostMapping(value = "api/user/setNotificationEndpoint/{endpoint}")
     public ResponseEntity setNotificationEndpoint (@PathVariable(value="endpoint") String endpoint){
         try {
-            User user = (User) request.getSession().getAttribute("user");
-            String platform = user.getPlatform();
+            String platform = (String) request.getSession().getAttribute("userPlatform");
             Platform newPlatform = new Platform(platform, endpoint);
             platformRepository.save(newPlatform);
             return new ResponseEntity(newPlatform, HttpStatus.OK);
