@@ -1,6 +1,8 @@
 package ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.report;
 
 import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.review.Review;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity(name ="Report")
@@ -13,6 +15,7 @@ public class Report {
     private int reportAmount;
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "review_id")
+    @JsonIgnore
     private Review review;
 
     public Report() {}

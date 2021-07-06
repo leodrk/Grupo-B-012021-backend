@@ -6,6 +6,7 @@ import ar.edu.unq.dessap.grupob012021.GrupoB012021backend.model.user.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -19,8 +20,12 @@ public class UserServiceImpl implements UserService  {
         userRepository.save(user);
     }
 
-    public Optional<User> findByUsernameAndPassword(String username, String password) {
-        return userRepository.findByUsernameAndPassword(username, password);
+    public User findByUsernameAndPassword(String username, String password) throws NoSuchElementException {
+        Optional<User> optionalUser = userRepository.findByUsernameAndPassword(username, password);
+        if (optionalUser.isPresent()) {
+            return optionalUser.get();
+        }
+        throw new NoSuchElementException();
     }
 
     private User getUserfromDTO(UserDTO userDTO){
