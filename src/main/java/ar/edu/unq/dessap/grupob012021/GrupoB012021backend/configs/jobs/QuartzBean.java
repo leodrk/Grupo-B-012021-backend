@@ -22,7 +22,7 @@ public class QuartzBean {
     public Trigger trigger(JobDetail notificationJob) {
         return TriggerBuilder.newTrigger().forJob(notificationJob)
                 .withIdentity("Job Notificate for new reviews")
-                .withSchedule(CronScheduleBuilder.cronSchedule("0 */2 * ? * *"))
+                .withSchedule(CronScheduleBuilder.cronSchedule("0 */1 * ? * *"))
                 .build();
     }
 }

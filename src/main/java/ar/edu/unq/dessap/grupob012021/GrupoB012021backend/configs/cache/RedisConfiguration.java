@@ -22,7 +22,7 @@ public class RedisConfiguration {
     public RedisCacheManager redisCacheManager(LettuceConnectionFactory lettuceConnectionFactory) {
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()
-                .entryTtl(Duration.ofMinutes(2))
+                .entryTtl(Duration.ofMinutes(1))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.json()));
         redisCacheConfiguration.usePrefix();
         return RedisCacheManager.RedisCacheManagerBuilder.fromConnectionFactory(lettuceConnectionFactory)
